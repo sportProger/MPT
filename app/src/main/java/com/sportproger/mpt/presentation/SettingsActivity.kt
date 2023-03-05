@@ -133,15 +133,15 @@ class SettingsActivity: Base() {
 //        )
     }
 
-//    private fun getTime(): Long {
-//        val calendar = Calendar.getInstance()
-//        vm.getNotificationTime()
-//        vm.notificationTimeLive().observe(this, {
-//            calendar.set(it.year, it.month, Calendar.DAY_OF_MONTH, it.hour, it.minute)
-//        })
-//
-//        return calendar.timeInMillis
-//    }
+    private fun getTime(): Long {
+        val calendar = Calendar.getInstance()
+        vm.getNotificationTime()
+        vm.notificationTimeLive().observe(this, {
+            calendar.set(it.year, it.month, Calendar.DAY_OF_MONTH, it.hour, it.minute)
+        })
+
+        return calendar.timeInMillis
+    }
 
 //    private fun createNotificationChannel() {
 //        val name = "Notif Channel"
