@@ -116,12 +116,12 @@ class SettingsActivity: Base() {
         binding.bannerAdView.loadAd(adRequest)
     }
 
-    private fun scheduleNotification() {
-        val intent = Intent(applicationContext, Notification::class.java)
-        val title = "MPT"
-        val message = "Пора решать примеры"
-        intent.putExtra(titleExtra, title)
-        intent.putExtra(messageExtra, message)
+//    private fun scheduleNotification() {
+//        val intent = Intent(applicationContext, Notification::class.java)
+//        val title = "MPT"
+//        val message = "Пора решать примеры"
+//        intent.putExtra(titleExtra, title)
+//        intent.putExtra(messageExtra, message)
 
 //        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 //        val time = getTime()
@@ -131,17 +131,17 @@ class SettingsActivity: Base() {
 //            AlarmManager.INTERVAL_DAY,
 //            pendingIntent
 //        )
-    }
+//    }
 
-    private fun getTime(): Long {
-        val calendar = Calendar.getInstance()
-        vm.getNotificationTime()
-        vm.notificationTimeLive().observe(this, {
-            calendar.set(it.year, it.month, Calendar.DAY_OF_MONTH, it.hour, it.minute)
-        })
-
-        return calendar.timeInMillis
-    }
+//    private fun getTime(): Long {
+//        val calendar = Calendar.getInstance()
+//        vm.getNotificationTime()
+//        vm.notificationTimeLive().observe(this, {
+//            calendar.set(it.year, it.month, Calendar.DAY_OF_MONTH, it.hour, it.minute)
+//        })
+//
+//        return calendar.timeInMillis
+//    }
 
 //    private fun createNotificationChannel() {
 //        val name = "Notif Channel"
