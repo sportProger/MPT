@@ -1,0 +1,83 @@
+plugins {
+    id 'com.android.application' // Replace library on application
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "sportproger.mathsimulatorsolutionexamples"
+        minSdk 21
+        targetSdk 32
+        versionCode 12
+        versionName "2.4.2"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    compileSdkVersion 32
+}
+
+dependencies {
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation("androidx.core:core-ktx:1.6.0")
+
+    // MyTracker
+    implementation 'com.my.tracker:mytracker-sdk:3.0.+'
+    implementation 'com.android.installreferrer:installreferrer:2.2'
+    implementation 'com.google.android.gms:play-services-ads-identifier:18.0.0'
+    implementation 'com.google.android.gms:play-services-appset:16.0.1'
+    implementation 'com.my.tracker:mytracker-sdk:3.0.10'
+
+    implementation project(path: ':domain')
+    implementation project(path: ':data')
+
+    // Yandex ad
+    implementation 'com.yandex.android:mobileads:5.4.1'
+    implementation 'com.yandex.android:mobmetricalib:5.0.0'
+
+    // MySQL Lite Room
+    def room_version = "2.4.2"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    implementation "androidx.room:room-rxjava3:$room_version"
+    implementation "androidx.room:room-guava:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+    implementation "androidx.room:room-paging:2.5.0-alpha01"
+
+    // Live data
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha02")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha02")
+
+    // Koin
+    implementation "io.insert-koin:koin-core:3.2.0"
+    implementation "io.insert-koin:koin-android:3.2.0"
+    testImplementation "io.insert-koin:koin-test:3.2.0"
+}

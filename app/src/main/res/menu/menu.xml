@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/settings" android:id="@+id/settings" android:icon="@drawable/ic_setting_light" />
+    <item android:title="@string/help_project" android:id="@+id/help_project" android:icon="@drawable/ic_help_project" />
+    <item android:title="@string/levels" android:id="@+id/levels" android:icon="@drawable/ic_levels" />
+    <item android:title="@string/games" android:id="@+id/games" android:icon="@drawable/ic_game" />
+    <item android:title="@string/themes" android:id="@+id/themes" android:icon="@drawable/ic_themes_light" />
+    <item android:title="@string/about_us" android:id="@+id/about_us" android:icon="@drawable/ic_info_light" />
+    <item android:title="@string/privacy_policy" android:id="@+id/privacy_policy" android:icon="@drawable/ic_privacy_policy" />
+</menu>

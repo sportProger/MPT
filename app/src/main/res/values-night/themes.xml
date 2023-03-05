@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.MPT" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="fontFamily">@font/rubik_light</item>
+        <item name="colorPrimary">@color/tool_bar</item> <!--  Toolbar -->
+        <item name="colorPrimaryVariant">@color/white</item> <!--  was black text -->
+        <item name="colorOnPrimary">@color/calc_btn_dark</item> <!-- calc btn -->
+        <item name="colorSecondary">@color/calc_active_btn_dark</item> <!-- calc active btn -->
+        <item name="colorSecondaryVariant">@color/background</item> <!-- calc active btn -->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="colorTertiary">@color/calc_btn_dark</item>
+        <item name="colorOnTertiary">@color/dark_red</item>
+        <item name="colorTertiaryContainer">@color/calc_btn_dark</item>
+        <item name="colorOnTertiaryContainer">@color/dark_green</item>
+        <item name="colorAccent">@color/calc_btn_dark</item>
+    </style>
+</resources>

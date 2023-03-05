@@ -1,0 +1,133 @@
+<resources>
+    <string name="app_name">Математика, примеры, тренажер</string>
+
+    <!--  StartActivity  -->
+
+    <string name="welcome">Welcome</string>
+    <string name="sub_welcome">С помощью нашего приложения ты сможешь в несколько раз улучшить свои навыки в вычислениях.</string>
+    <string name="next">Продолжить</string>
+
+    <!--  Base  -->
+
+    <string name="share">Продолжить</string>
+    <string name="app_url">https://play.google.com/store/apps/details?id=sportproger.mathsimulatorsolutionexamples</string>
+
+    <!--  MainActivity  -->
+
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+    <string name="zero">0</string>
+    <string name="comma">,</string>
+    <string name="minus">-</string>
+    <string name="ac">AC</string>
+    <string name="c">C</string>
+    <string name="equals">=</string>
+    <string name="ok">OK</string>
+    <string name="sin">sin</string>
+    <string name="cos">cos</string>
+    <string name="tg">tg</string>
+    <string name="ctg">ctg</string>
+    <string name="you_dont_enter">Вы ничего не ввели</string>
+    <string name="you_dont_enter_number">Введите число</string>
+    <string name="it_is_true">Верно</string>
+    <string name="it_is_false">Неверно</string>
+    <string name="log">log</string>
+    <string name="ln">ln</string>
+    <string name="lg">lg</string>
+    <string name="enabled_internet">Проверьте подключение к интернету</string>
+    <string name="video_ad_unavailable">Видео реклама недоступна</string>
+
+    <!--  Menu  -->
+
+    <string name="main">Главная</string>
+    <string name="settings">Настройки</string>
+    <string name="help_project">Помощь проекту</string>
+    <string name="levels">Уровни</string>
+    <string name="games">Игры</string>
+    <string name="themes">Темы</string>
+    <string name="about_us">О нас</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+
+    <!--  Settings  -->
+
+    <string name="voice">Звуки</string>
+    <string name="notification">Уведомления</string>
+    <string name="save">Сохранить</string>
+    <array name="numbers">
+        <item>Однозначные</item>
+        <item>Двузначные</item>
+        <item>Трехзначные</item>
+    </array>
+
+    <!--  Levels  -->
+
+    <string name="price">Цена</string>
+    <string name="decided">Решено</string>
+    <string name="of">из</string>
+    <string name="prime_numbers">Простые числа</string>
+
+    <!--  Level  -->
+
+    <string name="number_true">Верных</string>
+    <string name="number_false">Неверных</string>
+    <string name="dont_true_answer">-  неправильный ответ</string>
+    <string name="true_answer">- правильный ответ</string>
+    <string name="start">Начать</string>
+    <string name="max_examples">Максимум можно сохранить 25 примеров</string>
+
+    <!--  RoundTheEnd  -->
+
+    <string name="round_the_end">Раунд окончен</string>
+    <string name="you_great_guy">Вы большой молодец</string>
+    <string name="repeat">Повторить</string>
+    <string name="rounds">Раунды</string>
+    <string name="plus_five_coin">Плюс пять монет</string>
+
+    <!--  HelpProject  -->
+
+    <string name="you_can_help">Ты можешь помочь нам, переведи деньги на ВТБ счет, поддержи нас на Patreon или поделись ссылкой на наше приложение.</string>
+    <string name="patreon">Patreon</string>
+    <string name="patreon_url">https://www.patreon.com/sportproger</string>
+    <string name="sber_numbers">ВТБ счет</string>
+    <string name="sber_nums">40817810639437020088</string>
+    <string name="share_link">Ссылка</string>
+    <string name="app_link">https://play.google.com/store/apps/details?id=sportproger.mathsimulatorsolutionexamples</string>
+
+    <!--  Themes  -->
+
+    <string name="zero_price">0</string>
+    <string name="five_hundred_price">500</string>
+    <string name="dark_theme_price">400</string>
+    <string name="standart_theme">Стандартная</string>
+    <string name="pink_theme">Розовая</string>
+    <string name="dark_theme">Темная</string>
+    <string name="not_enough_money_dark_theme">Недостаточно средств для покупки темной темы</string>
+    <string name="not_enough_money_level">Недостаточно средств для покупки уровня</string>
+    <string name="level_acquired">Уровень приобретен!</string>
+
+    <!--  About us  -->
+
+    <string name="poplevin_pavel">Поплевин Павел</string>
+    <string name="developer">Разработчик</string>
+
+    <!--  Games  -->
+    <string name="game">Игры</string>
+    <string name="connection_game_url">https://sportproger.github.io/Shop/connect/index.html</string>
+    <string name="search_game_url">https://sportproger.github.io/Shop/sum/index.html</string>
+
+    <!--  Fragment  -->
+
+    <string name="you_want_plus_coins">Хотите получить +10 монет!</string>
+    <string name="then_watch_the_ad">Тогда посмотрите рекламу</string>
+    <string name="watch_the_ad">Смотреть рекламу</string>
+    <string name="solve_examples">Решать примеры</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
