@@ -116,13 +116,13 @@ class SettingsActivity: Base() {
         binding.bannerAdView.loadAd(adRequest)
     }
 
-//    private fun scheduleNotification() {
-//        val intent = Intent(applicationContext, Notification::class.java)
-//        val title = "MPT"
-//        val message = "Пора решать примеры"
-//        intent.putExtra(titleExtra, title)
-//        intent.putExtra(messageExtra, message)
-//
+    private fun scheduleNotification() {
+        val intent = Intent(applicationContext, Notification::class.java)
+        val title = "MPT"
+        val message = "Пора решать примеры"
+        intent.putExtra(titleExtra, title)
+        intent.putExtra(messageExtra, message)
+
 //        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 //        val time = getTime()
 //        alarmManager.setRepeating(
@@ -131,7 +131,7 @@ class SettingsActivity: Base() {
 //            AlarmManager.INTERVAL_DAY,
 //            pendingIntent
 //        )
-//    }
+    }
 
 //    private fun getTime(): Long {
 //        val calendar = Calendar.getInstance()
