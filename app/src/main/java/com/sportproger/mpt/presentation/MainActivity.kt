@@ -234,6 +234,7 @@ class MainActivity: Base() {
                     vm.generateLogarithmExample()
                     showHideLayout(constraintLogarithm)
                     currentResultTV = resLogarighm
+                    //dsadsdsa
                 }
             }
         })
