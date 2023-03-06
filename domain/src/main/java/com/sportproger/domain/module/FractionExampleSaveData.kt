@@ -12,5 +12,6 @@ data class FractionExampleSaveData (
     val floatResult: Float,
     val result: Int,
     val userAnswer: Int,
+    val userAnswerFloat: Float,
     val stateExample: Boolean
 )

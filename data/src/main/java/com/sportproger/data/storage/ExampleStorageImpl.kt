@@ -74,6 +74,7 @@ class ExampleStorageImpl(context: Context): ExampleStorage {
                 floatResult = fractionExample.floatResult,
                 result = fractionExample.result,
                 userAnswer = fractionExample.userAnswer,
+                userAnswerFloat = fractionExample.userAnswerFloat,
                 stateExample = fractionExample.stateExample,
             ))
         }

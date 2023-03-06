@@ -1,6 +1,7 @@
 package com.sportproger.mpt.presentation.recycler
 
 import android.graphics.Color
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,21 +20,39 @@ class FractionAdapter(): RecyclerView.Adapter<FractionAdapter.FractionHolder>() 
         val binding = FractionItemBinding.bind(item)
         val view = item
         var flag = false
+        var flagFloat = false
 
         fun bind(fraction: Fraction) = with(binding) {
-            numerator1.text = fraction.numerator1.toString()
-            denominator1.text = fraction.denominator1.toString()
-            signF.text = fraction.sign
-            numerator2.text = fraction.numerator2.toString()
-            denominator2.text = fraction.denominator2.toString()
-            resF.text = fraction.userAnswer.toString()
+            if (fraction.type == "common") {
+                constraintFraction.visibility = View.VISIBLE
+                simpleFraction.visibility = View.GONE
+                numerator1.text = fraction.numerator1.toString()
+                denominator1.text = fraction.denominator1.toString()
+                signF.text = fraction.sign
+                numerator2.text = fraction.numerator2.toString()
+                denominator2.text = fraction.denominator2.toString()
+                resF.text = fraction.userAnswer.toString()
+            }
+            if (fraction.type == "decimals") {
+                constraintFraction.visibility = View.GONE
+                simpleFraction.visibility = View.VISIBLE
+                fractionNumber1.text = fraction.number1.toString()
+                fractionNumber2.text = fraction.number2.toString()
+                fractionSign.text = fraction.sign
+                fractionRes.text = fraction.userAnswerFloat.toString()
+            }
 
             fun replaceColor(color: String) {
                 numerator1.setTextColor(Color.parseColor(color))
                 numerator2.setTextColor(Color.parseColor(color))
                 denominator1.setTextColor(Color.parseColor(color))
                 denominator2.setTextColor(Color.parseColor(color))
+                fractionNumber1.setTextColor(Color.parseColor(color))
+                fractionNumber2.setTextColor(Color.parseColor(color))
+                fractionSign.setTextColor(Color.parseColor(color))
+                fractionRes.setTextColor(Color.parseColor(color))
                 signF.setTextColor(Color.parseColor(color))
+                equal2F.setTextColor(Color.parseColor(color))
                 equalsF.setTextColor(Color.parseColor(color))
                 resF.setTextColor(Color.parseColor(color))
 
@@ -48,6 +67,7 @@ class FractionAdapter(): RecyclerView.Adapter<FractionAdapter.FractionHolder>() 
             }
 
             if (fraction.result != fraction.userAnswer) replaceColor("#E09F9F")
+            if (fraction.floatResult != fraction.userAnswerFloat) replaceColor("#E09F9F")
 
             item.setOnClickListener {
                 if (fraction.result != fraction.userAnswer) {
@@ -60,6 +80,19 @@ class FractionAdapter(): RecyclerView.Adapter<FractionAdapter.FractionHolder>() 
                         replaceColor("#E09F9F")
                         resF.text = fraction.userAnswer.toString()
                         flag = false
+                    }
+                }
+
+                if (fraction.floatResult != fraction.userAnswerFloat) {
+                    if (!flagFloat) {
+                        replaceColor("#85DA97")
+                        fractionRes.text = fraction.floatResult.toString()
+                        flagFloat = true
+                    }
+                    else {
+                        replaceColor("#E09F9F")
+                        fractionRes.text = fraction.userAnswerFloat.toString()
+                        flagFloat = false
                     }
                 }
             }

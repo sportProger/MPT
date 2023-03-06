@@ -9,8 +9,10 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -103,7 +105,7 @@ class MainActivity: Base() {
                     if (stateExample != null) {
                         val userAnswer = currentResultTV.text.toString().toInt()
                         currentResultTV.text = ""
-//                      vm.setFractionExample(FractionExampleSaveData(example.type, example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2, example.number1, example.number2, example.floatResult, example.result,  userAnswer, stateExample))
+                        vm.setFractionExample(FractionExampleSaveData(example.type, example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2, example.number1, example.number2, example.floatResult, example.result,  userAnswer, 0F, stateExample))
                         equalsAd(stateExample)
                         determineNumberOfCoins(Conf.FRACTION, stateExample)
                     }
@@ -117,7 +119,7 @@ class MainActivity: Base() {
                     if (stateExample != null) {
                         val userAnswer = currentResultTV.text.toString().toFloat()
                         currentResultTV.text = ""
-//                      vm.setFractionExample(FractionExampleSaveData(example.type, example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2, example.number1, example.number2, example.floatResult, example.result,  userAnswer, stateExample))
+                        vm.setFractionExample(FractionExampleSaveData(example.type, example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2, example.number1, example.number2, example.floatResult, example.result,  0, userAnswer, stateExample))
                         equalsAd(stateExample)
                         determineNumberOfCoins(Conf.FRACTION, stateExample)
                     }
@@ -332,7 +334,7 @@ class MainActivity: Base() {
 
     private fun checkExampleGeneral(level: String, result: Int): Boolean? {
         var value: Boolean? = null
-        if (currentResultTV.text.isNotEmpty() && currentResultTV.text != "-" && currentResultTV.text[-1] != ',') {
+        if (currentResultTV.text.isNotEmpty() && currentResultTV.text != "-") {
             var res = checkExample(currentResultTV.text.toString().toInt(), result)
             if (res) { trueAnswer(); vm.addCorrectAnswer(level); }
             else { falseAnswer(); vm.addWrongAnswer(level) }
@@ -341,7 +343,6 @@ class MainActivity: Base() {
             vm.getLevel()
         }
         else if (currentResultTV.text == "-") errorAnswer(R.string.you_dont_enter_number)
-        else if (currentResultTV.text[-1] == ',') errorAnswer(R.string.incorrect_data_entered)
         else emptyAnswer()
 
         return value
@@ -446,17 +447,50 @@ class MainActivity: Base() {
 
         fractionLinearLayout.removeAllViews()
         fractionLinearLayout2.removeAllViews()
-        signForFraction.text = sign
+
         fractionLinearLayout.addView(tv1)
+        signForFraction.text = sign
         fractionLinearLayout2.addView(tv2)
     }
 
     private fun showCommonFractionExample(numer1: Int, denomin1: Int, sign: String, numer2: Int, denomin2: Int) = with(binding) {
-        numerator1.text      = numer1.toString()
-        denominator1.text    = denomin1.toString()
-        numerator2.text      = numer2.toString()
-        denominator2.text    = denomin2.toString()
+        val numerator1 = TextView(this@MainActivity)
+        val numerator2 = TextView(this@MainActivity)
+        val line = ImageView(this@MainActivity)
+        val line2 = ImageView(this@MainActivity)
+        val denominator1 = TextView(this@MainActivity)
+        val denominator2 = TextView(this@MainActivity)
+
+        numerator1.text = numer1.toString()
+        numerator2.text = numer2.toString()
+        line.setImageResource(R.drawable.ic_line_black_horizontal)
+        line2.setImageResource(R.drawable.ic_line_black_horizontal)
+        denominator1.text = denomin1.toString()
+        denominator2.text = denomin2.toString()
+
+        line.setPadding(0, 8, 0, 8)
+        line2.setPadding(0, 8, 0, 8)
+
+        numerator1.textSize = 24F
+        numerator2.textSize = 24F
+        denominator1.textSize = 24F
+        denominator2.textSize = 24F
+
+        fractionLinearLayout.removeAllViews()
+        fractionLinearLayout2.removeAllViews()
+
+        fractionLinearLayout.gravity = Gravity.CENTER_VERTICAL
+        fractionLinearLayout2.gravity = Gravity.CENTER_VERTICAL
+
+        fractionLinearLayout.addView(numerator1)
+        fractionLinearLayout.addView(line)
+        fractionLinearLayout.addView(denominator1)
+
         signForFraction.text = sign
+
+        fractionLinearLayout2.addView(numerator2)
+        fractionLinearLayout2.addView(line2)
+        fractionLinearLayout2.addView(denominator2)
     }
 
     private fun showDegreeExample(base1: Int, exp1: Int, sign: String, base2: Int, exp2: Int) = with(binding) {

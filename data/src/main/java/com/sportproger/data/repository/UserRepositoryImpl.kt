@@ -156,6 +156,7 @@ class UserRepositoryImpl(
             floatResult = fractionExample.floatResult,
             result = fractionExample.result,
             userAnswer = fractionExample.userAnswer,
+            userAnswerFloat = fractionExample.userAnswerFloat,
             stateExample = fractionExample.stateExample,
         ))
     }
@@ -176,6 +177,7 @@ class UserRepositoryImpl(
                 floatResult = it.floatResult,
                 result = it.result,
                 userAnswer = it.userAnswer,
+                userAnswerFloat = it.userAnswerFloat,
                 stateExample = it.stateExample,
             )
 
