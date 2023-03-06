@@ -36,6 +36,7 @@
     <string name="ctg">ctg</string>
     <string name="you_dont_enter">Вы ничего не ввели</string>
     <string name="you_dont_enter_number">Введите число</string>
+    <string name="incorrect_data_entered">Введены неверные данные</string>
     <string name="it_is_true">Верно</string>
     <string name="it_is_false">Неверно</string>
     <string name="log">log</string>

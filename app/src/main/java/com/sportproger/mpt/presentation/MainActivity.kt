@@ -1,5 +1,6 @@
 package com.sportproger.mpt.presentation
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -92,13 +93,20 @@ class MainActivity: Base() {
         })
 
         vm.fractionExampleLive().observe(this@MainActivity, {example ->
-            showFractionExample(example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2)
+            if (example.type == "common") {
+                showHideLayout(constraintCommonFraction)
+                showCommonFractionExample(example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2)
+            }
+            if (example.type == "decimals") {
+                showHideLayout(constraintDecimalsFraction)
+                showDecimalsFractionExample(example.number1, example.sign, example.number2)
+            }
             equals.setOnClickListener {
                 val stateExample = checkExampleGeneral(Conf.FRACTION, example.result)
                 if (stateExample != null) {
                     val userAnswer = currentResultTV.text.toString().toInt()
                     currentResultTV.text = ""
-                    vm.setFractionExample(FractionExampleSaveData(example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2, example.result, userAnswer, stateExample))
+                    vm.setFractionExample(FractionExampleSaveData(example.type, example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2, example.number1, example.number2, example.floatResult, example.result,  userAnswer, stateExample))
 
                     equalsAd(stateExample)
                     determineNumberOfCoins(Conf.FRACTION, stateExample)
@@ -184,19 +192,18 @@ class MainActivity: Base() {
             Log.d("Looog", "$it - level Live")
             when(it) {
                 Conf.INTEGERS -> {
-                    vm.generateIntegersExample()
+                    vm.generateIntegersExample(negativity = true)
                     showHideLayout(constraintSimple)
                     currentResultTV = resSimple
+                }
+                Conf.FRACTION -> {
+                    vm.generateFractionExample()
+                    currentResultTV = resFraction
                 }
                 Conf.MODULES -> {
                     vm.generateIntegersExample(negativity = true)
                     showHideLayout(constraintModules)
                     currentResultTV = resModules
-                }
-                Conf.FRACTION -> {
-                    vm.generateFractionExample()
-                    showHideLayout(constraintFraction)
-                    currentResultTV = resFraction
                 }
                 Conf.DEGREE -> {
                     vm.generateDegreeExample()
@@ -247,7 +254,7 @@ class MainActivity: Base() {
         vm.getLevel()
     }
 
-    fun determineNumberOfCoins(level: String, state: Boolean) {
+    private fun determineNumberOfCoins(level: String, state: Boolean) {
         val currentCoinCount = binding.tvCoinCount.text.toString().toInt()
         when(level) {
             Conf.INTEGERS -> {
@@ -298,18 +305,18 @@ class MainActivity: Base() {
         tvTrueFalse.text = getString(R.string.you_dont_enter)
     }
 
-    private fun partialAnswer() = with(binding) {
+    private fun errorAnswer(text: Int) = with(binding) {
         tvTrueFalse.setTextColor(Color.parseColor( "#E09F9F" ))
-        tvTrueFalse.text = getString(R.string.you_dont_enter_number)
+        tvTrueFalse.text = getString(text)
     }
 
-    fun checkExample(userAnswer: Int, result: Int): Boolean {
+    private fun checkExample(userAnswer: Int, result: Int): Boolean {
         return userAnswer == result
     }
 
-    fun checkExampleGeneral(level: String, result: Int): Boolean? {
+    private fun checkExampleGeneral(level: String, result: Int): Boolean? {
         var value: Boolean? = null
-        if (currentResultTV.text.isNotEmpty() && currentResultTV.text != "-") {
+        if (currentResultTV.text.isNotEmpty() && currentResultTV.text != "-" && currentResultTV.text[-1] != ',') {
             val res = checkExample(currentResultTV.text.toString().toInt(), result)
             if (res) { trueAnswer(); vm.addCorrectAnswer(level); }
             else { falseAnswer(); vm.addWrongAnswer(level) }
@@ -317,7 +324,8 @@ class MainActivity: Base() {
             value = res
             vm.getLevel()
         }
-        else if(currentResultTV.text == "-") partialAnswer()
+        else if(currentResultTV.text == "-") errorAnswer(R.string.you_dont_enter_number)
+        else if(currentResultTV.text[-1] == ',') errorAnswer(R.string.incorrect_data_entered)
         else emptyAnswer()
 
         return value
@@ -343,6 +351,7 @@ class MainActivity: Base() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     fun onClickCalcButton(view: View) {
         when (view.id) {
             R.id.one   -> currentResultTV.text = "${currentResultTV.text}1"
@@ -355,6 +364,7 @@ class MainActivity: Base() {
             R.id.eight -> currentResultTV.text = "${currentResultTV.text}8"
             R.id.nine  -> currentResultTV.text = "${currentResultTV.text}9"
             R.id.zero  -> currentResultTV.text = "${currentResultTV.text}0"
+            R.id.comma -> if (currentResultTV.text.isNotEmpty()) currentResultTV.text = "${currentResultTV.text},"
             R.id.minus -> if (currentResultTV.text.isEmpty()) currentResultTV.text = "${currentResultTV.text}-"
             R.id.allClear -> allClear()
             R.id.clear    -> clear()
@@ -363,16 +373,17 @@ class MainActivity: Base() {
 
     private fun showHideLayout(showLayout: ConstraintLayout) = with(binding) {
         Log.d("Looog", showLayout.toString())
-        constraintDegree.visibility         = View.INVISIBLE
-        constraintSimple.visibility         = View.INVISIBLE
-        constraintModules.visibility        = View.INVISIBLE
-        constraintFraction.visibility       = View.INVISIBLE
-        constraintFactorial.visibility      = View.INVISIBLE
-        constraintLogarithm.visibility      = View.INVISIBLE
-        constraintLinearFunction.visibility = View.INVISIBLE
-        constraintCombinations.visibility   = View.INVISIBLE
-        constraintAccommodation.visibility  = View.INVISIBLE
-        showLayout.visibility               = View.VISIBLE
+        constraintDegree.visibility            = View.INVISIBLE
+        constraintSimple.visibility            = View.INVISIBLE
+        constraintModules.visibility           = View.INVISIBLE
+        constraintDecimalsFraction.visibility  = View.INVISIBLE
+        constraintCommonFraction.visibility    = View.INVISIBLE
+        constraintFactorial.visibility         = View.INVISIBLE
+        constraintLogarithm.visibility         = View.INVISIBLE
+        constraintLinearFunction.visibility    = View.INVISIBLE
+        constraintCombinations.visibility      = View.INVISIBLE
+        constraintAccommodation.visibility     = View.INVISIBLE
+        showLayout.visibility                  = View.VISIBLE
     }
 
     private fun showIntegersExample(num1: Int, sign: String, num2: Int) = with(binding) {
@@ -388,7 +399,13 @@ class MainActivity: Base() {
         number2Modules.text = number2.toString()
     }
 
-    private fun showFractionExample(numer1: Int, denomin1: Int, sign: String, numer2: Int, denomin2: Int) = with(binding) {
+    private fun showDecimalsFractionExample(number1: Float, sign: String, number2: Float) = with(binding) {
+        decimalsNumber1.text   = number1.toString()
+        decimalsResult.text    = sign
+        decimalsNumber2.text   = number2.toString()
+    }
+
+    private fun showCommonFractionExample(numer1: Int, denomin1: Int, sign: String, numer2: Int, denomin2: Int) = with(binding) {
         numerator1.text      = numer1.toString()
         denominator1.text    = denomin1.toString()
         numerator2.text      = numer2.toString()
@@ -404,6 +421,7 @@ class MainActivity: Base() {
         exponent2.text = exp2.toString()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showLinearFunctionExample(x: Int, a: Int, sign: String, b: Int) = with(binding) {
         nameFunLinear.text = "F($x)="
         axLinear.text = "${a}x"

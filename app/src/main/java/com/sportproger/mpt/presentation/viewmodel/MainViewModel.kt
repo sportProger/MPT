@@ -178,22 +178,48 @@ class MainViewModel(
 
     fun generateFractionExample() {
         val sign = arrayListOf("+", "-", "*").random()
-        val numbers1 = numbersToDivide()
-        val numbers2 = numbersToDivide()
+        val type = arrayListOf("decimals", "common").random()
 
-        val numerator1 = numbers1[0]
-        val denominator1 = numbers1[1]
-        val numerator2 = numbers2[0]
-        val denominator2 = numbers2[1]
-        var result = 0
+        if (type == "common") {
+            val numbers1 = numbersToDivide()
+            val numbers2 = numbersToDivide()
 
-        when (sign) {
-            "+" -> result = (numerator1 / denominator1) + (numerator2 / denominator2)
-            "-" -> result = (numerator1 / denominator1) - (numerator2 / denominator2)
-            "*" -> result = (numerator1 / denominator1) * (numerator2 / denominator2)
+            val numerator1 = numbers1[0]
+            val denominator1 = numbers1[1]
+            val numerator2 = numbers2[0]
+            val denominator2 = numbers2[1]
+            var result = 0
+
+            when (sign) {
+                "+" -> result = (numerator1 / denominator1) + (numerator2 / denominator2)
+                "-" -> result = (numerator1 / denominator1) - (numerator2 / denominator2)
+                "*" -> result = (numerator1 / denominator1) * (numerator2 / denominator2)
+            }
+
+            exampleForFraction.value = FractionExample(type, numerator1, denominator1, sign, numerator2, denominator2, 0.0F, 0.0F, result, 0.0F)
+        }
+        if (type == "decimals") {
+            val data = userRepository.getTypeNumbers()
+            val numerator1 = (data.from..data.to).random().toFloat()
+            val denominator1 = (data.from..data.to).random().toFloat()
+            val numerator2 = (data.from..data.to).random().toFloat()
+            val denominator2 = (data.from..data.to).random().toFloat()
+
+            val number1 = numerator1 / denominator1
+            val number2 = numerator2 / denominator2
+            var result = 0.0F
+
+            when (sign) {
+                "+" -> result = number1 + number2
+                "-" -> result = number1 - number2
+                "*" -> result = number1 * number2
+            }
+
+            exampleForFraction.value = FractionExample(type, 0, 0, sign, 0, 0, number1, number2, 0, result)
         }
 
-        exampleForFraction.value = FractionExample(numerator1, denominator1, sign, numerator2, denominator2, result)
+        // decimals - десятичные
+        // common - обыкновенные
     }
 
     fun generateDegreeExample() {

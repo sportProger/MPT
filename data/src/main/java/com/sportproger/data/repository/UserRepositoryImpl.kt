@@ -150,6 +150,9 @@ class UserRepositoryImpl(
             sign = fractionExample.sign,
             numerator2 = fractionExample.numerator2,
             denominator2 = fractionExample.denominator2,
+            number1 = fractionExample.number1,
+            number2 = fractionExample.number2,
+            floatResult = fractionExample.floatResult,
             result = fractionExample.result,
             userAnswer = fractionExample.userAnswer,
             stateExample = fractionExample.stateExample,
@@ -161,11 +164,15 @@ class UserRepositoryImpl(
         val resultData = mutableListOf<FractionExampleSaveData>()
         data.forEach {
             val example = FractionExampleSaveData(
+                type = it.type,
                 numerator1 = it.numerator1,
                 denominator1 = it.denominator1,
                 sign = it.sign,
                 numerator2 = it.numerator2,
                 denominator2 = it.denominator2,
+                number1 = it.number1,
+                number2 = it.number2,
+                floatResult = it.floatResult,
                 result = it.result,
                 userAnswer = it.userAnswer,
                 stateExample = it.stateExample,

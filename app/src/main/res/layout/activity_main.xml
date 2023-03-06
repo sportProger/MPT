@@ -250,14 +250,14 @@
             <Button
                 android:id="@+id/zero"
                 style="@style/clac_button_style"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/button_calc_selector"
                 android:onClick="onClickCalcButton"
                 android:text="@string/zero"
                 app:layout_constraintBottom_toBottomOf="@+id/equals"
-                app:layout_constraintEnd_toEndOf="@+id/two"
+                app:layout_constraintEnd_toEndOf="@+id/one"
                 app:layout_constraintStart_toStartOf="@+id/one"
                 app:layout_constraintTop_toBottomOf="@+id/one" />
 
@@ -272,6 +272,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/three"
                 app:layout_constraintTop_toBottomOf="@+id/clear" />
+
+            <Button
+                android:id="@+id/comma"
+                style="@style/clac_button_style"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_calc_selector"
+                android:text="@string/comma"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/equals"
+                app:layout_constraintStart_toEndOf="@+id/zero"
+                app:layout_constraintTop_toBottomOf="@+id/two" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -445,7 +458,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintFraction"
+            android:id="@+id/constraintCommonFraction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -1126,6 +1139,73 @@
                 app:layout_constraintBottom_toBottomOf="@+id/textView22"
                 app:layout_constraintStart_toEndOf="@+id/textView22"
                 app:layout_constraintTop_toTopOf="@+id/textView22" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintDecimalsFraction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTrueFalse">
+
+            <TextView
+                android:id="@+id/decimalsNumber1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20.5"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/decimalsSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="+"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/decimalsNumber1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/decimalsNumber2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="12.2"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/decimalsSign"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView44"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="="
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/decimalsNumber2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/decimalsResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView44"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

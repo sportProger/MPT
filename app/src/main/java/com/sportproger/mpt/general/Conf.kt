@@ -21,7 +21,7 @@ object Conf {
     const val THREE_DIGIT_RU = "Трехзначные" // Трехзначные
 
     const val INTEGERS = "INTEGERS" // Натуральные числа
-    const val INTEGERS_RU = "Натуральные числа" // Натуральные числа
+    const val INTEGERS_RU = "Целые числа" // Натуральные числа
 
     const val MODULES = "MODULE"
     const val MODULES_RU = "Модули"

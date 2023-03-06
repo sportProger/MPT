@@ -70,7 +70,7 @@ class ExampleStorageImpl(context: Context): ExampleStorage {
                 denominator2 = fractionExample.denominator2,
                 result = fractionExample.result,
                 userAnswer = fractionExample.userAnswer,
-                stateExample = fractionExample.stateExample
+                stateExample = fractionExample.stateExample,
             ))
         }
     }
