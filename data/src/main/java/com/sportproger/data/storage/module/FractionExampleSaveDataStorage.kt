@@ -1,6 +1,7 @@
 package com.sportproger.data.storage.module
 
 data class FractionExampleSaveDataStorage(
+    val type: String,
     val numerator1: Int,
     val denominator1: Int,
     val sign: String,

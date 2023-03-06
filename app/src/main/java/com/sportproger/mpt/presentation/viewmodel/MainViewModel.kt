@@ -205,8 +205,8 @@ class MainViewModel(
             val numerator2 = (data.from..data.to).random().toFloat()
             val denominator2 = (data.from..data.to).random().toFloat()
 
-            val number1 = numerator1 / denominator1
-            val number2 = numerator2 / denominator2
+            val number1 = String.format("%.2f", (numerator1 / denominator1)).toFloat()
+            val number2 = String.format("%.2f", (numerator2 / denominator2)).toFloat()
             var result = 0.0F
 
             when (sign) {

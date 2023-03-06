@@ -63,11 +63,15 @@ class ExampleStorageImpl(context: Context): ExampleStorage {
         if (db.fractionsExampleDao().getAll().size < maxExamples) {
             db.fractionsExampleDao().insertAll(FractionsExampleEntity(
                 null,
+                type = fractionExample.type,
                 numerator1 = fractionExample.numerator1,
                 denominator1 = fractionExample.denominator1,
                 sign = fractionExample.sign,
                 numerator2 = fractionExample.numerator2,
                 denominator2 = fractionExample.denominator2,
+                number1 = fractionExample.number1,
+                number2 = fractionExample.number2,
+                floatResult = fractionExample.floatResult,
                 result = fractionExample.result,
                 userAnswer = fractionExample.userAnswer,
                 stateExample = fractionExample.stateExample,

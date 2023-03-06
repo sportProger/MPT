@@ -145,6 +145,7 @@ class UserRepositoryImpl(
 
     override fun setFractionExample(fractionExample: FractionExampleSaveData) {
         exampleStorage.setFractionExample(FractionExampleSaveDataStorage(
+            type = fractionExample.type,
             numerator1 = fractionExample.numerator1,
             denominator1 = fractionExample.denominator1,
             sign = fractionExample.sign,
