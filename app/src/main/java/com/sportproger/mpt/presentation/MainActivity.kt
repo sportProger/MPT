@@ -15,6 +15,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
+import androidx.core.view.marginLeft
+import androidx.core.view.marginStart
 import com.google.android.material.navigation.NavigationView
 import com.sportproger.domain.module.*
 import com.sportproger.mpt.R
@@ -94,22 +96,31 @@ class MainActivity: Base() {
 
         vm.fractionExampleLive().observe(this@MainActivity, {example ->
             if (example.type == "common") {
-                showHideLayout(constraintCommonFraction)
+                Log.d("TaskLog", "${example.numerator1} - numerator1, ${example.numerator2} - number2, ${example.sign} - sign, ${example.denominator1} - denominator1, ${example.denominator2} - denominator2, ${example.result} - result")
                 showCommonFractionExample(example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2)
+                equals.setOnClickListener {
+                    val stateExample = checkExampleGeneral(Conf.FRACTION, example.result)
+                    if (stateExample != null) {
+                        val userAnswer = currentResultTV.text.toString().toInt()
+                        currentResultTV.text = ""
+//                      vm.setFractionExample(FractionExampleSaveData(example.type, example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2, example.number1, example.number2, example.floatResult, example.result,  userAnswer, stateExample))
+                        equalsAd(stateExample)
+                        determineNumberOfCoins(Conf.FRACTION, stateExample)
+                    }
+                }
             }
             if (example.type == "decimals") {
-                showHideLayout(constraintDecimalsFraction)
+                Log.d("TaskLog", "${example.number1} - number1, ${example.sign} - sign, ${example.number2} - number2, ${example.floatResult} - result")
                 showDecimalsFractionExample(example.number1, example.sign, example.number2)
-            }
-            equals.setOnClickListener {
-                val stateExample = checkExampleGeneral(Conf.FRACTION, example.result)
-                if (stateExample != null) {
-                    val userAnswer = currentResultTV.text.toString().toInt()
-                    currentResultTV.text = ""
-                    vm.setFractionExample(FractionExampleSaveData(example.type, example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2, example.number1, example.number2, example.floatResult, example.result,  userAnswer, stateExample))
-
-                    equalsAd(stateExample)
-                    determineNumberOfCoins(Conf.FRACTION, stateExample)
+                equals.setOnClickListener {
+                    val stateExample = checkExampleGeneral(Conf.FRACTION, example.floatResult)
+                    if (stateExample != null) {
+                        val userAnswer = currentResultTV.text.toString().toFloat()
+                        currentResultTV.text = ""
+//                      vm.setFractionExample(FractionExampleSaveData(example.type, example.numerator1, example.denominator1, example.sign, example.numerator2, example.denominator2, example.number1, example.number2, example.floatResult, example.result,  userAnswer, stateExample))
+                        equalsAd(stateExample)
+                        determineNumberOfCoins(Conf.FRACTION, stateExample)
+                    }
                 }
             }
         })
@@ -198,6 +209,7 @@ class MainActivity: Base() {
                 }
                 Conf.FRACTION -> {
                     vm.generateFractionExample()
+                    showHideLayout(constraintFraction)
                     currentResultTV = resFraction
                 }
                 Conf.MODULES -> {
@@ -314,10 +326,31 @@ class MainActivity: Base() {
         return userAnswer == result
     }
 
+    private fun checkExample(userAnswer: Float, result: Float): Boolean {
+        return userAnswer == result
+    }
+
     private fun checkExampleGeneral(level: String, result: Int): Boolean? {
         var value: Boolean? = null
         if (currentResultTV.text.isNotEmpty() && currentResultTV.text != "-" && currentResultTV.text[-1] != ',') {
-            val res = checkExample(currentResultTV.text.toString().toInt(), result)
+            var res = checkExample(currentResultTV.text.toString().toInt(), result)
+            if (res) { trueAnswer(); vm.addCorrectAnswer(level); }
+            else { falseAnswer(); vm.addWrongAnswer(level) }
+
+            value = res
+            vm.getLevel()
+        }
+        else if (currentResultTV.text == "-") errorAnswer(R.string.you_dont_enter_number)
+        else if (currentResultTV.text[-1] == ',') errorAnswer(R.string.incorrect_data_entered)
+        else emptyAnswer()
+
+        return value
+    }
+
+    private fun checkExampleGeneral(level: String, result: Float): Boolean? {
+        var value: Boolean? = null
+        if (currentResultTV.text.isNotEmpty() && currentResultTV.text.toString() != "-") {
+            var res = checkExample(currentResultTV.text.toString().toFloat(), result)
             if (res) { trueAnswer(); vm.addCorrectAnswer(level); }
             else { falseAnswer(); vm.addWrongAnswer(level) }
 
@@ -325,7 +358,11 @@ class MainActivity: Base() {
             vm.getLevel()
         }
         else if(currentResultTV.text == "-") errorAnswer(R.string.you_dont_enter_number)
-        else if(currentResultTV.text[-1] == ',') errorAnswer(R.string.incorrect_data_entered)
+        else if(currentResultTV.text.isNotEmpty()) {
+            if (currentResultTV.text[-1] == ',') {
+                errorAnswer(R.string.incorrect_data_entered)
+            }
+        }
         else emptyAnswer()
 
         return value
@@ -364,7 +401,7 @@ class MainActivity: Base() {
             R.id.eight -> currentResultTV.text = "${currentResultTV.text}8"
             R.id.nine  -> currentResultTV.text = "${currentResultTV.text}9"
             R.id.zero  -> currentResultTV.text = "${currentResultTV.text}0"
-            R.id.comma -> if (currentResultTV.text.isNotEmpty()) currentResultTV.text = "${currentResultTV.text},"
+            R.id.comma -> if (currentResultTV.text.isNotEmpty()) currentResultTV.text = "${currentResultTV.text}."
             R.id.minus -> if (currentResultTV.text.isEmpty()) currentResultTV.text = "${currentResultTV.text}-"
             R.id.allClear -> allClear()
             R.id.clear    -> clear()
@@ -376,8 +413,7 @@ class MainActivity: Base() {
         constraintDegree.visibility            = View.INVISIBLE
         constraintSimple.visibility            = View.INVISIBLE
         constraintModules.visibility           = View.INVISIBLE
-        constraintDecimalsFraction.visibility  = View.INVISIBLE
-        constraintCommonFraction.visibility    = View.INVISIBLE
+        constraintFraction.visibility          = View.INVISIBLE
         constraintFactorial.visibility         = View.INVISIBLE
         constraintLogarithm.visibility         = View.INVISIBLE
         constraintLinearFunction.visibility    = View.INVISIBLE
@@ -400,9 +436,19 @@ class MainActivity: Base() {
     }
 
     private fun showDecimalsFractionExample(number1: Float, sign: String, number2: Float) = with(binding) {
-        decimalsNumber1.text   = number1.toString()
-        decimalsResult.text    = sign
-        decimalsNumber2.text   = number2.toString()
+        val tv1 = TextView(this@MainActivity)
+        tv1.text = number1.toString()
+        val tv2 = TextView(this@MainActivity)
+        tv2.text = number2.toString()
+
+        tv1.textSize = 24F
+        tv2.textSize = 24F
+
+        fractionLinearLayout.removeAllViews()
+        fractionLinearLayout2.removeAllViews()
+        signForFraction.text = sign
+        fractionLinearLayout.addView(tv1)
+        fractionLinearLayout2.addView(tv2)
     }
 
     private fun showCommonFractionExample(numer1: Int, denomin1: Int, sign: String, numer2: Int, denomin2: Int) = with(binding) {
@@ -440,7 +486,6 @@ class MainActivity: Base() {
             AdFrame.visibility = View.VISIBLE
             watchAd.setOnClickListener {
                 val a  = internetConnectionCheck()
-                Log.d("Looog", a.toString() + " - connect")
                 if (a) {
                     showAd(); AdFrame.visibility = View.INVISIBLE
                 }
@@ -472,11 +517,9 @@ class MainActivity: Base() {
         val rewardedEventListener = object: RewardedAdEventListener {
             override fun onAdLoaded() {
                 mRewardedAd.show()
-                Log.d("Looog", "ad is loaded")
             }
 
             override fun onAdFailedToLoad(p0: AdRequestError) {
-                Log.d("Looog", "$p0 - video error")
                 Toast.makeText(this@MainActivity, getString(R.string.video_ad_unavailable), Toast.LENGTH_SHORT).show()
             }
 

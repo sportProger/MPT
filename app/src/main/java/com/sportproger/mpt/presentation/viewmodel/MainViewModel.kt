@@ -200,13 +200,14 @@ class MainViewModel(
         }
         if (type == "decimals") {
             val data = userRepository.getTypeNumbers()
-            val numerator1 = (data.from..data.to).random().toFloat()
-            val denominator1 = (data.from..data.to).random().toFloat()
-            val numerator2 = (data.from..data.to).random().toFloat()
-            val denominator2 = (data.from..data.to).random().toFloat()
+            val numerator1 = (data.from..data.to).shuffled().last().toFloat()
+            val denominator1 = (data.from..data.to).shuffled().last().toFloat() + 1
+            val numerator2 = (data.from..data.to).shuffled().last().toFloat()
+            val denominator2 = (data.from..data.to).shuffled().last().toFloat() + 1
 
             val number1 = String.format("%.2f", (numerator1 / denominator1)).toFloat()
             val number2 = String.format("%.2f", (numerator2 / denominator2)).toFloat()
+            Log.d("TaskLog", "$number2 - number2 - decimals, $numerator2, - numerator2, $denominator2 - denominator")
             var result = 0.0F
 
             when (sign) {
