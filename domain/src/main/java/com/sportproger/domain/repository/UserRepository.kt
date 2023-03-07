@@ -41,6 +41,10 @@ interface UserRepository {
     fun getFractionExample(): List<FractionExampleSaveData>
     fun removeFractionExample()
 
+    fun setEquationExample(fractionExample: EquationExampleSaveData)
+    fun getEquationExample(): List<EquationExampleSaveData>
+    fun removeEquationExample()
+
     fun setDegreeExample(degreeExample: DegreeExampleSaveData)
     fun getDegreeExample(): List<DegreeExampleSaveData>
     fun removeDegreeExample()

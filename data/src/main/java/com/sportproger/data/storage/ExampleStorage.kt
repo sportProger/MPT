@@ -20,6 +20,10 @@ interface ExampleStorage {
     fun getFractionExample(): List<FractionsExampleEntity>
     fun removeFractionExample()
 
+    fun setEquationExample(fractionExample: EquationExampleSaveDataStorage)
+    fun getEquationExample(): List<EquationExampleEntity>
+    fun removeEquationExample()
+
     fun setDegreeExample(degreeExample: DegreeExampleSaveDataStorage)
     fun getDegreeExample(): List<DegreeExampleEntity>
     fun removeDegreeExample()

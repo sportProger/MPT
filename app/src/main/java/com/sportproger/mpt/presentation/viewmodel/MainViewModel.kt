@@ -14,6 +14,7 @@ import android.net.ConnectivityManager
 
 import android.net.NetworkInfo
 import org.koin.core.component.getScopeId
+import kotlin.math.abs
 
 
 class MainViewModel(
@@ -26,6 +27,7 @@ class MainViewModel(
     private val exampleForIntegers = MutableLiveData<IntegersExample>()
     private val exampleForModules = MutableLiveData<ModulesExample>()
     private val exampleForFraction = MutableLiveData<FractionExample>()
+    private val exampleForEquation = MutableLiveData<EquationExample>()
     private val exampleForDegree = MutableLiveData<DegreeExample>()
     private val exampleForLinearFunction = MutableLiveData<LinearFunctionExample>()
     private val exampleForLogarithm = MutableLiveData<LogarithmExample>()
@@ -59,6 +61,8 @@ class MainViewModel(
 
     fun fractionExampleLive(): LiveData<FractionExample> { return exampleForFraction }
 
+    fun equationExampleLive(): LiveData<EquationExample> { return exampleForEquation }
+
     fun linearFunctionExampleLive(): LiveData<LinearFunctionExample> { return exampleForLinearFunction }
 
     fun degreeExampleLive(): LiveData<DegreeExample> { return exampleForDegree }
@@ -70,6 +74,8 @@ class MainViewModel(
     fun setModulesExample(modulesExample: ModulesExampleSaveData) { userRepository.setModulesExample(modulesExample) }
 
     fun setFractionExample(fractionsExample: FractionExampleSaveData) { userRepository.setFractionExample(fractionsExample) }
+
+    // fun setEquationExample(equationExample: EquationExampleSaveData) { userRepository.setEquationExample(equationExample) }
 
     fun setDegreeExample(degreeExample: DegreeExampleSaveData) { userRepository.setDegreeExample(degreeExample) }
 
@@ -201,9 +207,12 @@ class MainViewModel(
         if (type == "decimals") {
             val data = userRepository.getTypeNumbers()
             val numerator1 = (data.from..data.to).shuffled().last().toFloat()
-            val denominator1 = (-10..10).shuffled().last().toFloat() + 1
+            var denominator1 = (-10..10).shuffled().last().toFloat()
             val numerator2 = (data.from..data.to).shuffled().last().toFloat()
-            val denominator2 = (10..10).shuffled().last().toFloat() + 1
+            var denominator2 = (10..10).shuffled().last().toFloat()
+
+            if (denominator1 == 0.0F) denominator1 += 1.0F
+            if (denominator2 == 0.0F) denominator2 += 1.0F
 
             val number1 = String.format("%.2f", (numerator1 / denominator1)).toFloat()
             val number2 = String.format("%.2f", (numerator2 / denominator2)).toFloat()
@@ -222,6 +231,49 @@ class MainViewModel(
 
         // decimals - десятичные
         // common - обыкновенные
+    }
+
+    fun generateEquationExample() {
+        val data = userRepository.getTypeNumbers()
+        val type = arrayListOf("linear", "square").random()
+        var result = 0.0F
+
+        if (type == "linear") {
+            val sign1 = arrayListOf("-", "+").shuffled().last()
+            val a = (data.from..data.to).random()
+            var b = (data.from..data.to).random()
+
+            Log.d("TaskLog", "$type - type, $a - a, $b - b, $result - result")
+
+            when (sign1) {
+                "+" -> b = -b
+                "-" -> b = abs(b)
+            }
+
+            result = String.format("%.2f", (b.toFloat() / a.toFloat())).toFloat()
+            exampleForEquation.value = EquationExample(type, a, b, 0,  sign1, "", result, null)
+            Log.d("TaskLog", "$type - type, $a - a, $b - b, $result - result")
+
+        }
+        else if (type == "square") {
+            val a = (data.from..data.to).shuffled().last()
+            val x1 = (-data.from..data.to).shuffled().last()
+            val x2 = (-data.from..data.to).shuffled().last()
+            val b = (x2 + x1) * a
+            val c = (x1 * x2) * a
+            var sign1 = ""
+            var sign2 = ""
+            // (x sign1 x1)(x sign2 x2)
+
+            sign1 = if (b < 0) "+"
+            else "-"
+
+            sign2 = if (c < 0) "-"
+            else "+"
+
+            exampleForEquation.value = EquationExample(type, a, b, c, sign1, sign2, 0F, arrayListOf(x1, x2))
+            Log.d("TaskLog", "$type - type, $a - a, $b - b, $c - c, $x1 - x1, $x2 - x2, ${b*b -4 * a * c} - desc")
+        }
     }
 
     fun generateDegreeExample() {

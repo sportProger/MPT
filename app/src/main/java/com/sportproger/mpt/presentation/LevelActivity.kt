@@ -16,6 +16,7 @@ class LevelActivity: Base() {
     private val integersAdapter = IntegersAdapter()
     private val modulesAdapter = ModulesAdapter()
     private val fractionAdapter = FractionAdapter()
+    private val equationAdapter = EquationAdapter()
     private val degreeAdapter = DegreeAdapter()
     private val linearFunctionAdapter = LinearFunctionAdapter()
     private val logarithmAdapter = LogarithmAdapter()
@@ -45,6 +46,7 @@ class LevelActivity: Base() {
                 Conf.INTEGERS -> initIntegers()
                 Conf.MODULES  -> initModules()
                 Conf.FRACTION -> initFractions()
+                Conf.EQUATION -> initEquation()
                 Conf.DEGREE   -> initDegree()
                 Conf.LINEAR_FUNCTIONS -> initLinearFunction()
                 Conf.LOGARITHM -> initLogarithm()
@@ -74,6 +76,9 @@ class LevelActivity: Base() {
                 Conf.FRACTION -> {
                     vm.removeAllFractionsExamples()
                     fractionAdapter.clear()
+                }
+                Conf.EQUATION -> {
+                    // vm.removeAllEquationExamples()
                 }
                 Conf.DEGREE -> {
                     vm.removeAllDegreeExample()
@@ -149,6 +154,20 @@ class LevelActivity: Base() {
 
         falseAnswer.text = Conf.PRICE_FOR_CORRECT_FRACTION_ANSWER.toString()
         trueAnswer.text = Conf.PRICE_FOR_WRONG_FRACTION_ANSWER.toString()
+    }
+
+    private fun initEquation() = with(binding) {
+        rvExamples.layoutManager = LinearLayoutManager(this@LevelActivity)
+        rvExamples.adapter = equationAdapter
+        vm.getAllEquationExample()
+        vm.getEquationExamplesLive().observe(this@LevelActivity, {
+            it.forEach { example -> equationAdapter.addExample(example) }
+        })
+
+        initGeneral(Conf.EQUATION)
+
+        falseAnswer.text = Conf.PRICE_FOR_CORRECT_EQUATION_ANSWER.toString()
+        trueAnswer.text = Conf.PRICE_FOR_WRONG_EQUATION_ANSWER.toString()
     }
 
     private fun initDegree() = with(binding) {

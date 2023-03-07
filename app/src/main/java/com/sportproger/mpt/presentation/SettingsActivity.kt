@@ -61,7 +61,7 @@ class SettingsActivity: Base() {
 //            val notificationChecked = notificationSwitch.isChecked
 
             when(spinner.selectedItem.toString()) {
-                Conf.UNAMBIGUOUS_RU -> vm.setTypeNumbers(TypeNumbersData(Conf.UNAMBIGUOUS, 0, 9))
+                Conf.UNAMBIGUOUS_RU -> vm.setTypeNumbers(TypeNumbersData(Conf.UNAMBIGUOUS, 1, 9))
                 Conf.TWO_DIGIT_RU   -> vm.setTypeNumbers(TypeNumbersData(Conf.TWO_DIGIT, 10, 99))
                 Conf.THREE_DIGIT_RU -> vm.setTypeNumbers(TypeNumbersData(Conf.THREE_DIGIT, 100, 999))
             }

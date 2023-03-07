@@ -191,6 +191,46 @@ class UserRepositoryImpl(
         exampleStorage.removeFractionExample()
     }
 
+    override fun setEquationExample(equationExample: EquationExampleSaveData) {
+        exampleStorage.setEquationExample(EquationExampleSaveDataStorage(
+            type = equationExample.type,
+            a = equationExample.a,
+            b = equationExample.b,
+            c = equationExample.c,
+            sign1 = equationExample.sign1,
+            sign2 = equationExample.sign2,
+            linearResult = equationExample.linearResult,
+            squareResult = equationExample.squareResult,
+            userLinearAnswer = equationExample.userLinearAnswer,
+            userSquareAnswer = equationExample.userSquareAnswer,
+            stateExample = equationExample.stateExample,
+        ))
+    }
+
+    override fun getEquationExample(): List<EquationExampleSaveData> {
+        val data = exampleStorage.getEquationExample()
+        val resultData = mutableListOf<EquationExampleSaveData>()
+        data.forEach {
+            val example = EquationExampleSaveData(
+                type = it.type,
+                a = it.a,
+                b = it.b,
+                c = it.c,
+                sign1 = it.sign1,
+                sign2 = it.sign2,
+                linearResult = it.linearResult,
+                squareResult = it.squareResult,
+                userLinearAnswer = it.userLinearAnswer,
+                userSquareAnswer = it.userSquareAnswer,
+                stateExample = it.stateExample,
+            )
+        }
+    }
+
+    override fun removeEquationExample() {
+        TODO("Not yet implemented")
+    }
+
     override fun setDegreeExample(degreeExample: DegreeExampleSaveData) {
         exampleStorage.setDegreeExample(DegreeExampleSaveDataStorage(
             base1 = degreeExample.base1,

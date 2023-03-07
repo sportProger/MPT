@@ -1,13 +1,10 @@
 package com.sportproger.data.storage
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
 import androidx.room.Room
 import com.sportproger.data.database.DataBase
 import com.sportproger.data.database.Entity.*
 import com.sportproger.data.storage.module.*
-import kotlin.math.log
 
 class ExampleStorageImpl(context: Context): ExampleStorage {
     private val db = Room.databaseBuilder(
@@ -83,6 +80,33 @@ class ExampleStorageImpl(context: Context): ExampleStorage {
     override fun getFractionExample(): List<FractionsExampleEntity> { return db.fractionsExampleDao().getAll() }
 
     override fun removeFractionExample() { db.fractionsExampleDao().deleteAll() }
+
+    override fun setEquationExample(equationExample: EquationExampleSaveDataStorage) {
+        if (db.equationExampleDao().getAll().size < maxExamples) {
+            db.equationExampleDao().insertAll(EquationExampleEntity(
+                null,
+                type = equationExample.type,
+                a = equationExample.a,
+                b = equationExample.b,
+                c = equationExample.c,
+                sign1 = equationExample.sign1,
+                sign2 = equationExample.sign2,
+                linearResult = equationExample.linearResult,
+                squareResult = "fdss",
+                userLinearAnswer = equationExample.userLinearAnswer,
+                userSquareAnswer = equationExample.userSquareAnswer,
+                stateExample = equationExample.stateExample,
+            ))
+        }
+    }
+
+    override fun getEquationExample(): List<EquationExampleEntity> {
+        return db.equationExampleDao().getAll()
+    }
+
+    override fun removeEquationExample() {
+        db.equationExampleDao().deleteAll()
+    }
 
     override fun setDegreeExample(degreeExample: DegreeExampleSaveDataStorage) {
         if (db.degreeExampleDao().getAll().size < maxExamples) {

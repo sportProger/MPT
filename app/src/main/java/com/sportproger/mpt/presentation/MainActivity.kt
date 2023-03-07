@@ -127,6 +127,32 @@ class MainActivity: Base() {
             }
         })
 
+        vm.equationExampleLive().observe(this@MainActivity, {example ->
+            showEquationExampleLive(example.type, example.a, example.b, example.c, example.sign1, example.sign2)
+            equals.setOnClickListener {
+                var stateExample: Boolean? = null;
+
+                if (example.type == "linear") stateExample = checkExampleGeneral(Conf.EQUATION, example.linearResult)
+                else if (example.type == "square") stateExample = checkExampleGeneral(Conf.EQUATION, example.squareResult)
+
+                if (stateExample != null) {
+
+                    if (example.type == "linear") {
+                        var userAnswer = currentResultTV.text.toString().toFloat()
+                        // save example
+                    }
+                    else if (example.type == "square") {
+                        val userAnswer = currentResultTV.text.toString().toInt()
+                        // save example
+                    }
+
+                    currentResultTV.text = ""
+                    equalsAd(stateExample)
+                    determineNumberOfCoins(Conf.EQUATION, stateExample)
+                }
+            }
+        })
+
         vm.degreeExampleLive().observe(this@MainActivity, {example ->
             showDegreeExample(example.base1, example.exponent1, example.sign, example.base2, example.exponent2)
             equals.setOnClickListener {
@@ -219,6 +245,11 @@ class MainActivity: Base() {
                     showHideLayout(constraintModules)
                     currentResultTV = resModules
                 }
+                Conf.EQUATION -> {
+                    vm.generateEquationExample()
+                    showHideLayout(constraintEquation)
+                    currentResultTV = equationRes
+                }
                 Conf.DEGREE -> {
                     vm.generateDegreeExample()
                     showHideLayout(constraintDegree)
@@ -229,7 +260,6 @@ class MainActivity: Base() {
                     showHideLayout(constraintLinearFunction)
                     currentResultTV = resForLinearFunction
                 }
-
                 Conf.LOGARITHM -> {
                     vm.generateLogarithmExample()
                     showHideLayout(constraintLogarithm)
@@ -284,6 +314,10 @@ class MainActivity: Base() {
                 if (state) vm.setNumberOfCoins(currentCoinCount + Conf.PRICE_FOR_CORRECT_FRACTION_ANSWER)
                 else vm.setNumberOfCoins(currentCoinCount + Conf.PRICE_FOR_WRONG_FRACTION_ANSWER)
             }
+            Conf.EQUATION -> {
+                if (state) vm.setNumberOfCoins(currentCoinCount + Conf.PRICE_FOR_WRONG_EQUATION_ANSWER)
+                else vm.setNumberOfCoins(currentCoinCount + Conf.PRICE_FOR_WRONG_EQUATION_ANSWER)
+            }
             Conf.DEGREE -> {
                 if (state) vm.setNumberOfCoins(currentCoinCount + Conf.PRICE_FOR_CORRECT_DEGREE_ANSWER)
                 else vm.setNumberOfCoins(currentCoinCount + Conf.PRICE_FOR_WRONG_DEGREE_ANSWER)
@@ -333,6 +367,12 @@ class MainActivity: Base() {
         return userAnswer == result
     }
 
+    private fun checkAddFloat(str: String): String {
+        var res = str
+        if (!str.contains(".")) res = "${str}.0"
+        return res
+    }
+
     private fun checkExampleGeneral(level: String, result: Int): Boolean? {
         var value: Boolean? = null
         if (currentResultTV.text.isNotEmpty() && currentResultTV.text != "-") {
@@ -351,8 +391,33 @@ class MainActivity: Base() {
 
     private fun checkExampleGeneral(level: String, result: Float): Boolean? {
         var value: Boolean? = null
+        val ua = checkAddFloat(currentResultTV.text.toString())
+        if (ua.isNotEmpty() && ua != "-") {
+            val res = checkExample(ua.toFloat(), result)
+            if (res) { trueAnswer(); vm.addCorrectAnswer(level); }
+            else { falseAnswer(); vm.addWrongAnswer(level) }
+
+            value = res
+            vm.getLevel()
+        }
+        else if(ua == "-") errorAnswer(R.string.you_dont_enter_number)
+        else if(ua.isNotEmpty()) {
+            if (ua[-1] == ',') {
+                errorAnswer(R.string.incorrect_data_entered)
+            }
+        }
+        else emptyAnswer()
+
+        return value
+    }
+
+    private fun checkExampleGeneral(level: String, result: ArrayList<Int>?): Boolean? {
+        var value: Boolean? = null
         if (currentResultTV.text.isNotEmpty() && currentResultTV.text.toString() != "-") {
-            var res = checkExample(currentResultTV.text.toString().toFloat(), result)
+            var res = false;
+            if (currentResultTV.text.toString().toInt() == result?.get(0) || currentResultTV.text.toString().toInt() == result?.get(1)) {
+                res = true
+            }
             if (res) { trueAnswer(); vm.addCorrectAnswer(level); }
             else { falseAnswer(); vm.addWrongAnswer(level) }
 
@@ -411,11 +476,11 @@ class MainActivity: Base() {
     }
 
     private fun showHideLayout(showLayout: ConstraintLayout) = with(binding) {
-        Log.d("Looog", showLayout.toString())
         constraintDegree.visibility            = View.INVISIBLE
         constraintSimple.visibility            = View.INVISIBLE
         constraintModules.visibility           = View.INVISIBLE
         constraintFraction.visibility          = View.INVISIBLE
+        constraintEquation.visibility          = View.INVISIBLE
         constraintFactorial.visibility         = View.INVISIBLE
         constraintLogarithm.visibility         = View.INVISIBLE
         constraintLinearFunction.visibility    = View.INVISIBLE
@@ -492,6 +557,28 @@ class MainActivity: Base() {
         fractionLinearLayout2.addView(numerator2)
         fractionLinearLayout2.addView(line2)
         fractionLinearLayout2.addView(denominator2)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showEquationExampleLive(type: String, a: Int, b: Int, c: Int, sign1: String, sign2: String) = with(binding) {
+        if (type == "linear") {
+            constraintEquationSquare.visibility = View.GONE
+            constraintEquationLinear.visibility = View.VISIBLE
+
+            equationLinearA.text = "${a}x"
+            equationLinearSign.text = sign1
+            equationLinearB.text = b.toString()
+        }
+        else if (type == "square") {
+            constraintEquationLinear.visibility = View.GONE
+            constraintEquationSquare.visibility = View.VISIBLE
+
+            equationSquareA.text = "${a}x"
+            equationSquareSign1.text = sign1
+            equationSquareB.text = "${b}x"
+            equationSquareSign2.text = sign2
+            equationSquareC.text = c.toString()
+        }
     }
 
     private fun showDegreeExample(base1: Int, exp1: Int, sign: String, base2: Int, exp2: Int) = with(binding) {

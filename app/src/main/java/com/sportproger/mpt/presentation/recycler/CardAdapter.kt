@@ -1,5 +1,6 @@
 package com.sportproger.mpt.presentation.recycler
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
@@ -40,6 +41,7 @@ class CardAdapter(private val context: Context): RecyclerView.Adapter<CardAdapte
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bind(card: Card) {
             binding.price.text = card.price
             binding.howMany.text = "${card.how_mach_decided} из ${card.how_mach_decided.toInt() + card.how_mach_not_decided.toInt()}"
@@ -50,6 +52,7 @@ class CardAdapter(private val context: Context): RecyclerView.Adapter<CardAdapte
                 Conf.INTEGERS_RU -> state = true
                 Conf.MODULES_RU  -> state = getPurchaseStatusForLevel(Conf.MODULES)
                 Conf.FRACTION_RU -> state = getPurchaseStatusForLevel(Conf.FRACTION)
+                Conf.EQUATION_RU -> state = getPurchaseStatusForLevel(Conf.EQUATION)
                 Conf.DEGREE_RU   -> state = getPurchaseStatusForLevel(Conf.DEGREE)
                 Conf.LINEAR_FUNCTIONS_RU -> state = getPurchaseStatusForLevel(Conf.LINEAR_FUNCTIONS)
                 Conf.LOGARITHM_RU -> state = getPurchaseStatusForLevel(Conf.LOGARITHM)

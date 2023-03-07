@@ -14,6 +14,7 @@ class LevelViewModel(
     private val integersExamples = MutableLiveData<List<Integer>>()
     private val modulesExamples = MutableLiveData<List<Module>>()
     private val fractionExamples = MutableLiveData<List<Fraction>>()
+    private val equationExamples = MutableLiveData<List<Equation>>()
     private val degreeExamples = MutableLiveData<List<Degree>>()
     private val logarithmExamples = MutableLiveData<List<Logarithm>>()
     private val linearFunctionExamples = MutableLiveData<List<LinearFunction>>()
@@ -33,6 +34,8 @@ class LevelViewModel(
     fun getModulesExamplesLive(): LiveData<List<Module>> { return modulesExamples }
 
     fun getFractionExamplesLive(): LiveData<List<Fraction>> { return fractionExamples }
+
+    fun getEquationExamplesLive(): LiveData<List<Equation>> { return equationExamples }
 
     fun getDegreeExamplesLive(): LiveData<List<Degree>> { return degreeExamples }
 
@@ -120,6 +123,27 @@ class LevelViewModel(
         degreeExamples.value = resultData
     }
 
+    fun getAllEquationExample() {
+        val resultData = mutableListOf<Equation>()
+        userRepository.getEquationExample().forEach {
+            resultData.add(Equation(
+                type = it.type,
+                a = it.a,
+                b = it.b,
+                c = it.c,
+                sign1 = it.sign1,
+                sign2 = it.sign2,
+                linearResult = it.linearResult,
+                squareResult = it.squareResult,
+                userLinearAnswer = it.userLinearAnswer,
+                userSquareAnswer = it.userSquareAnswer,
+                stateExample = it.stateExample
+            ))
+        }
+
+        equationExamples.value = resultData
+    }
+
     fun getAllLinearFunctionExample() {
         val resultData = mutableListOf<LinearFunction>()
         userRepository.getLinearFunctionExample().forEach {
@@ -157,6 +181,8 @@ class LevelViewModel(
     fun removeAllModulesExamples() { userRepository.removeModulesExample() }
 
     fun removeAllFractionsExamples() { userRepository.removeFractionExample() }
+
+    fun removeAllEquationExamples() { userRepository.removeEquationExample() }
 
     fun removeAllDegreeExample() { userRepository.removeDegreeExample() }
 
