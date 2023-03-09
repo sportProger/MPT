@@ -12,9 +12,9 @@ data class EquationExampleEntity(
     val c: Int,
     val sign1: String,
     val sign2: String,
-    val linearResult: Float,
-    val squareResult: String,
-    val userLinearAnswer: Float,
-    val userSquareAnswer: Int,
+    val linearResult: Float?,
+    val squareResult: String?,
+    val userLinearAnswer: Float?,
+    val userSquareAnswer: Int?,
     val stateExample: Boolean
 )

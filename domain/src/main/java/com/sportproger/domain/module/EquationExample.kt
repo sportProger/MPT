@@ -7,6 +7,6 @@ data class EquationExample(
     val c: Int,
     val sign1: String,
     val sign2: String,
-    val linearResult: Float,
-    val squareResult: ArrayList<Int>?
+    val linearResult: Float?,
+    val squareResult: ArrayList<Int?>?
 )

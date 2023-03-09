@@ -7,9 +7,9 @@ data class EquationExampleSaveData(
     val c: Int,
     val sign1: String,
     val sign2: String,
-    val linearResult: Float,
-    val squareResult: ArrayList<Int>?,
-    val userLinearAnswer: Float,
-    val userSquareAnswer: Int,
+    val linearResult: Float?,
+    val squareResult: ArrayList<Int?>?,
+    val userLinearAnswer: Float?,
+    val userSquareAnswer: Int?,
     val stateExample: Boolean
 )

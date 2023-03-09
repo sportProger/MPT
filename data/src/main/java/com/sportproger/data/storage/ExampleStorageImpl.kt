@@ -92,7 +92,7 @@ class ExampleStorageImpl(context: Context): ExampleStorage {
                 sign1 = equationExample.sign1,
                 sign2 = equationExample.sign2,
                 linearResult = equationExample.linearResult,
-                squareResult = "fdss",
+                squareResult = equationExample.squareResult?.joinToString(" "),
                 userLinearAnswer = equationExample.userLinearAnswer,
                 userSquareAnswer = equationExample.userSquareAnswer,
                 stateExample = equationExample.stateExample,

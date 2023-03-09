@@ -23,6 +23,9 @@ class EquationAdapter(): RecyclerView.Adapter<EquationAdapter.EquationHolder>() 
                 equationSquareC.setTextColor(Color.parseColor(color))
                 equationSquareSign1.setTextColor(Color.parseColor(color))
                 equationSquareSign2.setTextColor(Color.parseColor(color))
+                equationLinearA.setTextColor(Color.parseColor(color))
+                equationLinearB.setTextColor(Color.parseColor(color))
+                equationLinearSign.setTextColor(Color.parseColor(color))
                 equationRes.setTextColor(Color.parseColor(color))
                 textView44.setTextColor(Color.parseColor(color))
                 textView48.setTextColor(Color.parseColor(color))
@@ -36,7 +39,7 @@ class EquationAdapter(): RecyclerView.Adapter<EquationAdapter.EquationHolder>() 
                 equationLinearA.text = equation.a.toString()
                 equationLinearSign.text = equation.sign1
                 equationLinearB.text = equation.b.toString()
-                equationRes.text = equation.linearResult.toString()
+                equationRes.text = equation.userLinearAnswer.toString()
 
                 val userAnswer = equation.userLinearAnswer
                 if (userAnswer != equation.linearResult) replaceColor("#E09F9F")
@@ -56,7 +59,7 @@ class EquationAdapter(): RecyclerView.Adapter<EquationAdapter.EquationHolder>() 
                     }
                 }
             }
-            else {
+            if (equation.type == "square") {
                 constraintEquationLinear.visibility = View.GONE
                 constraintEquationSquare.visibility = View.VISIBLE
 
@@ -65,16 +68,16 @@ class EquationAdapter(): RecyclerView.Adapter<EquationAdapter.EquationHolder>() 
                 equationSquareC.text = equation.c.toString()
                 equationSquareSign1.text = equation.sign1
                 equationSquareSign2.text = equation.sign2
-                equationRes.text = equation.squareResult.toString()
+                equationRes.text = equation.userSquareAnswer.toString()
 
-                val firstUserAnswer = equation.userSquareAnswer?.get(0)
+                val firstUserAnswer = equation.userSquareAnswer
                 if (firstUserAnswer != equation.squareResult?.get(0) && firstUserAnswer != equation.squareResult?.get(1)) replaceColor("#E09F9F")
 
                 item.setOnClickListener {
-                    if (equation.squareResult?.get(0) != firstUserAnswer && equation.squareResult?.get(1) != firstUserAnswer) {
+                    if (equation.squareResult?.get(0) != firstUserAnswer || equation.squareResult?.get(1) != firstUserAnswer) {
                         if (!flag) {
                             replaceColor("#85DA97")
-                            equationRes.text = equation.linearResult.toString()
+                            equationRes.text = equation.squareResult.toString()
                             flag = true
                         }
                         else {

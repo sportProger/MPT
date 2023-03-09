@@ -37,14 +37,14 @@ class LevelsActivity: Base() {
         cardAdapter.clear()
         levels.clear()
 
-        val levelsArr = listOf(Conf.INTEGERS, Conf.FRACTION, Conf.EQUATION, Conf.DEGREE, Conf.LINEAR_FUNCTIONS, Conf.LOGARITHM)
+        val levelsArr = listOf(Conf.INTEGERS, Conf.FRACTION, Conf.MODULES, Conf.EQUATION, Conf.DEGREE, Conf.LINEAR_FUNCTIONS, Conf.LOGARITHM)
 
         levelsArr.forEach { level ->
             val correct = vm.getNumberOfCorrectAnswer(level)
             val wrong = vm.getNumberOfWrongAnswer(level)
             when(level) {
                 Conf.INTEGERS -> levels.add(Card(Conf.PRICE_FOR_INTEGERS.toString(), correct.toString(), wrong.toString(), Conf.INTEGERS_RU))
-//                Conf.MODULES  -> levels.add(Card(Conf.PRICE_FOR_MODULES.toString(), correct.toString(), wrong.toString(), Conf.MODULES_RU))
+                Conf.MODULES  -> levels.add(Card(Conf.PRICE_FOR_MODULES.toString(), correct.toString(), wrong.toString(), Conf.MODULES_RU))
                 Conf.FRACTION -> levels.add(Card(Conf.PRICE_FOR_FRACTION.toString(), correct.toString(), wrong.toString(), Conf.FRACTION_RU))
                 Conf.EQUATION -> levels.add(Card(Conf.PRICE_FOR_EQUATION.toString(), correct.toString(), wrong.toString(), Conf.EQUATION_RU))
                 Conf.DEGREE   -> levels.add(Card(Conf.PRICE_FOR_DEGREE.toString(), correct.toString(), wrong.toString(), Conf.DEGREE_RU))
@@ -86,11 +86,8 @@ class LevelsActivity: Base() {
         cardAdapter.setOnItemClickListener(object: CardAdapter.onItemClickListener {
             override fun onItemClick(position: Int, cardName: String) {
                 when(cardName) {
-                    Conf.INTEGERS_RU -> {
-                        vm.setLevel(Conf.INTEGERS)
-                        startLevelActivity(cardName)
-                    }
-//                    Conf.MODULES_RU  -> initGeneral(cardName, Conf.PRICE_FOR_MODULES, Conf.MODULES)
+                    Conf.INTEGERS_RU -> initGeneral(cardName, Conf.PRICE_FOR_INTEGERS, Conf.INTEGERS)
+                    Conf.MODULES_RU  -> initGeneral(cardName, Conf.PRICE_FOR_MODULES, Conf.MODULES)
                     Conf.FRACTION_RU -> initGeneral(cardName, Conf.PRICE_FOR_FRACTION, Conf.FRACTION)
                     Conf.EQUATION_RU -> initGeneral(cardName, Conf.PRICE_FOR_EQUATION, Conf.EQUATION)
                     Conf.DEGREE_RU   -> initGeneral(cardName, Conf.PRICE_FOR_DEGREE, Conf.DEGREE)

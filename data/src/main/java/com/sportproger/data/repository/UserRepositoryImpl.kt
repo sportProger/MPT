@@ -211,6 +211,8 @@ class UserRepositoryImpl(
         val data = exampleStorage.getEquationExample()
         val resultData = mutableListOf<EquationExampleSaveData>()
         data.forEach {
+            val squareRes = it.squareResult?.split(" ")
+            val arrayListRes: ArrayList<Int?>? = arrayListOf(squareRes?.get(0)?.toInt(), squareRes?.get(1)?.toInt())
             val example = EquationExampleSaveData(
                 type = it.type,
                 a = it.a,
@@ -219,16 +221,20 @@ class UserRepositoryImpl(
                 sign1 = it.sign1,
                 sign2 = it.sign2,
                 linearResult = it.linearResult,
-                squareResult = it.squareResult,
+                squareResult = arrayListRes,
                 userLinearAnswer = it.userLinearAnswer,
                 userSquareAnswer = it.userSquareAnswer,
                 stateExample = it.stateExample,
             )
+
+            resultData.add(example)
         }
+
+        return resultData
     }
 
     override fun removeEquationExample() {
-        TODO("Not yet implemented")
+        exampleStorage.removeEquationExample()
     }
 
     override fun setDegreeExample(degreeExample: DegreeExampleSaveData) {

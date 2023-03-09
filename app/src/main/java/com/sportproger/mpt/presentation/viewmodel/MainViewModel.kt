@@ -75,7 +75,7 @@ class MainViewModel(
 
     fun setFractionExample(fractionsExample: FractionExampleSaveData) { userRepository.setFractionExample(fractionsExample) }
 
-    // fun setEquationExample(equationExample: EquationExampleSaveData) { userRepository.setEquationExample(equationExample) }
+     fun setEquationExample(equationExample: EquationExampleSaveData) { userRepository.setEquationExample(equationExample) }
 
     fun setDegreeExample(degreeExample: DegreeExampleSaveData) { userRepository.setDegreeExample(degreeExample) }
 
@@ -125,7 +125,7 @@ class MainViewModel(
 
     private fun numbersToDivide(): ArrayList<Int> {
         val data = userRepository.getTypeNumbers()
-        val num1 = ((data.from + 1)..data.to).shuffled().last()
+        val num1 = ((data.from + 1)..data.to).random()
         val array = arrayListOf<Int>()
         var i = data.from + 1
 
@@ -133,52 +133,50 @@ class MainViewModel(
             if(i % num1 == 0 || num1 % i == 0) array.add(i)
             i++
         }
-        val num2 = array.shuffled().last()
+        val num2 = array.random()
 
         return arrayListOf(max(num1, num2), min(num1, num2))
     }
 
-    fun generateIntegersExample(negativity: Boolean = false) {
+    fun generateIntegersExample(module: Boolean = false) {
         val sign = arrayOf("+", "-", "*", "/").random()
         val data = userRepository.getTypeNumbers()
+
+        Log.d("TaskLog", "Generate Integers Example")
 
         if(sign != "/") {
             var num1: Int
             var num2: Int
             var result = 0
 
-            if (!negativity) {
-                num1 = (data.from..data.to).shuffled().last()
-                num2 = (data.from..data.to).shuffled().last()
-                Log.d(Conf.MY_LOG, "$num1, $num2")
-                Log.d(Conf.MY_LOG, "${data.type} ${data.from} ${data.to}")
-
-                if(sign == "+") result = (num1 + num2)
-                if(sign == "-") result = (num1 - num2)
-                if(sign == "*") result = (num1 * num2)
-
-                exampleForIntegers.value = IntegersExample(num1, sign, num2, result)
-            }
-            else {
-                if(data.from == 0) {
-                    num1 = (-9..data.to).random()
-                    num2 = (-9..data.to).random()
+                if(data.from == 1) {
+                    num1 = (-data.to..data.to).random()
+                    num2 = (-data.to..data.to).random()
                 }
                 else {
                     num1 = (-data.from..data.to).random()
                     num2 = (-data.from..data.to).random()
                 }
 
-                if(sign == "+") result = (num1.absoluteValue + num2.absoluteValue)
-                if(sign == "-") result = (num1.absoluteValue - num2.absoluteValue)
-                if(sign == "*") result = (num1.absoluteValue * num2.absoluteValue)
+                if (module) {
+                    if (sign == "+") result = (num1.absoluteValue + num2.absoluteValue)
+                    if (sign == "-") result = (num1.absoluteValue - num2.absoluteValue)
+                    if (sign == "*") result = (num1.absoluteValue * num2.absoluteValue)
 
-                exampleForModules.value = ModulesExample(num1, sign, num2, result)
-            }
+                    exampleForModules.value = ModulesExample(num1, sign, num2, result)
+                }
+                else {
+                    if (sign == "+") result = (num1 + num2)
+                    if (sign == "-") result = (num1 - num2)
+                    if (sign == "*") result = (num1 * num2)
+
+                    exampleForIntegers.value = IntegersExample(num1, sign, num2, result)
+                }
         }
         else {
             val numbers = numbersToDivide()
-            exampleForIntegers.value = IntegersExample(numbers[0], "/", numbers[1], (numbers[0] / numbers[1]))
+            if (module) exampleForModules.value = ModulesExample(numbers[0], "/", numbers[1], (numbers[0] / numbers[1]))
+            else exampleForIntegers.value = IntegersExample(numbers[0], "/", numbers[1], (numbers[0] / numbers[1]))
         }
     }
 
@@ -235,7 +233,7 @@ class MainViewModel(
 
     fun generateEquationExample() {
         val data = userRepository.getTypeNumbers()
-        val type = arrayListOf("linear", "square").random()
+        val type = arrayListOf("square", "square").random()
         var result = 0.0F
 
         if (type == "linear") {
@@ -259,20 +257,32 @@ class MainViewModel(
             val a = (data.from..data.to).shuffled().last()
             val x1 = (-data.from..data.to).shuffled().last()
             val x2 = (-data.from..data.to).shuffled().last()
-            val b = (x2 + x1) * a
-            val c = (x1 * x2) * a
+            var b = (x2 + x1) * a
+            var c = (x1 * x2) * a
             var sign1 = ""
             var sign2 = ""
             // (x sign1 x1)(x sign2 x2)
 
-            sign1 = if (b < 0) "+"
-            else "-"
+            Log.d("TaskLog", "$a - a, $b - b, $c - c, $x1 - x1, $x2 - x2")
 
-            sign2 = if (c < 0) "-"
-            else "+"
+            if (b < 0) {
+                sign1 = "+"
+                b = abs(b)
+            }
+            else {
+                sign1 = "-"
+            }
 
-            exampleForEquation.value = EquationExample(type, a, b, c, sign1, sign2, 0F, arrayListOf(x1, x2))
-            Log.d("TaskLog", "$type - type, $a - a, $b - b, $c - c, $x1 - x1, $x2 - x2, ${b*b -4 * a * c} - desc")
+            if (c < 0) {
+                sign2 = "-"
+                c = abs(c)
+            }
+            else {
+                sign2 = "+"
+            }
+
+            exampleForEquation.value = EquationExample(type, a, b, c, sign1, sign2, null, arrayListOf(x1, x2))
+            Log.d("TaskLog", "$type - type, $a - a, $b - b, $c - c, $x1 - x1, $x2 - x2, $sign1 - sign1, $sign2 - sign2")
         }
     }
 

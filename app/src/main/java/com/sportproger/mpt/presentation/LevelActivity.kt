@@ -78,7 +78,8 @@ class LevelActivity: Base() {
                     fractionAdapter.clear()
                 }
                 Conf.EQUATION -> {
-                    // vm.removeAllEquationExamples()
+                    vm.removeAllEquationExamples()
+                    equationAdapter.clear()
                 }
                 Conf.DEGREE -> {
                     vm.removeAllDegreeExample()

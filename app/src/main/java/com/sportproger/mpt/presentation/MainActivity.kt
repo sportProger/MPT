@@ -1,6 +1,7 @@
 package com.sportproger.mpt.presentation
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -17,8 +18,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
-import androidx.core.view.marginLeft
-import androidx.core.view.marginStart
 import com.google.android.material.navigation.NavigationView
 import com.sportproger.domain.module.*
 import com.sportproger.mpt.R
@@ -35,6 +34,7 @@ import com.yandex.mobile.ads.rewarded.Reward
 import com.yandex.mobile.ads.rewarded.RewardedAd
 import com.yandex.mobile.ads.rewarded.RewardedAdEventListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.lifecycle.ViewModelProvider
 
 class MainActivity: Base() {
     private lateinit var binding: ActivityMainBinding
@@ -46,7 +46,6 @@ class MainActivity: Base() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         vm.isFirstStart()
         vm.isFirstStartLive().observe(this, {
             if (it) startActivity(Intent(this@MainActivity, StartActivity::class.java))
@@ -65,10 +64,11 @@ class MainActivity: Base() {
         vm.numberOfCoinsLive().observe(this@MainActivity, { tvCoinCount.text = it.toString() })
 
         vm.integersExampleLive().observe(this@MainActivity, { example ->
+            Log.d("TaskLog", "${example.number1} ${example.sign} ${example.number2}")
             showIntegersExample(example.number1, example.sign, example.number2)
             equals.setOnClickListener {
                 val stateExample = checkExampleGeneral(Conf.INTEGERS, example.result)
-                Log.d(Conf.MY_LOG, "$stateExample - stateExample integers")
+                Log.d("TaskLog", "$stateExample - stateExample integers")
                 if (stateExample != null) {
                     val userAnswer = currentResultTV.text.toString().toInt()
                     currentResultTV.text = ""
@@ -139,11 +139,35 @@ class MainActivity: Base() {
 
                     if (example.type == "linear") {
                         var userAnswer = currentResultTV.text.toString().toFloat()
-                        // save example
+                        vm.setEquationExample(EquationExampleSaveData(
+                            type = example.type,
+                            a = example.a,
+                            b = example.b,
+                            c = example.c,
+                            sign1 = example.sign1,
+                            sign2 = example.sign2,
+                            linearResult = example.linearResult,
+                            squareResult = example.squareResult,
+                            userLinearAnswer = userAnswer,
+                            userSquareAnswer = null,
+                            stateExample = stateExample
+                        ))
                     }
                     else if (example.type == "square") {
                         val userAnswer = currentResultTV.text.toString().toInt()
-                        // save example
+                        vm.setEquationExample(EquationExampleSaveData(
+                            type = example.type,
+                            a = example.a,
+                            b = example.b,
+                            c = example.c,
+                            sign1 = example.sign1,
+                            sign2 = example.sign2,
+                            linearResult = example.linearResult,
+                            squareResult = example.squareResult,
+                            userLinearAnswer = null,
+                            userSquareAnswer = userAnswer,
+                            stateExample = stateExample
+                        ))
                     }
 
                     currentResultTV.text = ""
@@ -223,17 +247,16 @@ class MainActivity: Base() {
 
         vm.getSounds()
         vm.soundsLive().observe(this@MainActivity, {
-            Log.d(Conf.MY_LOG, "$it - sounds state")
             soundsFlag = it
         })
 
         vm.levelLive().observe(this@MainActivity, {
-            Log.d("Looog", "$it - level Live")
             when(it) {
                 Conf.INTEGERS -> {
-                    vm.generateIntegersExample(negativity = true)
+                    vm.generateIntegersExample(module = false)
                     showHideLayout(constraintSimple)
                     currentResultTV = resSimple
+                    Log.d("TaskLog", "Integers")
                 }
                 Conf.FRACTION -> {
                     vm.generateFractionExample()
@@ -241,7 +264,7 @@ class MainActivity: Base() {
                     currentResultTV = resFraction
                 }
                 Conf.MODULES -> {
-                    vm.generateIntegersExample(negativity = true)
+                    vm.generateIntegersExample(module = true)
                     showHideLayout(constraintModules)
                     currentResultTV = resModules
                 }
@@ -264,7 +287,6 @@ class MainActivity: Base() {
                     vm.generateLogarithmExample()
                     showHideLayout(constraintLogarithm)
                     currentResultTV = resLogarighm
-                    //dsadsdsa
                 }
             }
         })
@@ -389,12 +411,12 @@ class MainActivity: Base() {
         return value
     }
 
-    private fun checkExampleGeneral(level: String, result: Float): Boolean? {
+    private fun checkExampleGeneral(level: String, result: Float?): Boolean? {
         var value: Boolean? = null
         val ua = checkAddFloat(currentResultTV.text.toString())
         if (ua.isNotEmpty() && ua != "-") {
-            val res = checkExample(ua.toFloat(), result)
-            if (res) { trueAnswer(); vm.addCorrectAnswer(level); }
+            val res = result?.let { checkExample(ua.toFloat(), it) }
+            if (res == true) { trueAnswer(); vm.addCorrectAnswer(level); }
             else { falseAnswer(); vm.addWrongAnswer(level) }
 
             value = res
@@ -411,7 +433,7 @@ class MainActivity: Base() {
         return value
     }
 
-    private fun checkExampleGeneral(level: String, result: ArrayList<Int>?): Boolean? {
+    private fun checkExampleGeneral(level: String, result: ArrayList<Int?>?): Boolean? {
         var value: Boolean? = null
         if (currentResultTV.text.isNotEmpty() && currentResultTV.text.toString() != "-") {
             var res = false;
@@ -487,12 +509,16 @@ class MainActivity: Base() {
         constraintCombinations.visibility      = View.INVISIBLE
         constraintAccommodation.visibility     = View.INVISIBLE
         showLayout.visibility                  = View.VISIBLE
+
+        Log.d("TaskLog", "Show Hide Layout")
     }
 
     private fun showIntegersExample(num1: Int, sign: String, num2: Int) = with(binding) {
         num1Simple.text = num1.toString()
         signSimple.text = sign
         num2Simple.text = num2.toString()
+
+        Log.d("TaskLog", "Show Integers Example")
     }
 
     private fun showModulesExample(number1: Int, sign: String, number2: Int) = with(binding) {
