@@ -37,17 +37,18 @@ class LevelsActivity: Base() {
         cardAdapter.clear()
         levels.clear()
 
-        val levelsArr = listOf(Conf.INTEGERS, Conf.FRACTION, Conf.MODULES, Conf.EQUATION, Conf.DEGREE, Conf.LINEAR_FUNCTIONS, Conf.LOGARITHM)
+        val levelsArr = listOf(Conf.INTEGERS, Conf.FRACTION, Conf.MODULES, Conf.EQUATION, Conf.DEGREE, Conf.ROOT, Conf.LINEAR_FUNCTIONS, Conf.LOGARITHM)
 
         levelsArr.forEach { level ->
             val correct = vm.getNumberOfCorrectAnswer(level)
             val wrong = vm.getNumberOfWrongAnswer(level)
-            when(level) {
+            when (level) {
                 Conf.INTEGERS -> levels.add(Card(Conf.PRICE_FOR_INTEGERS.toString(), correct.toString(), wrong.toString(), Conf.INTEGERS_RU))
                 Conf.MODULES  -> levels.add(Card(Conf.PRICE_FOR_MODULES.toString(), correct.toString(), wrong.toString(), Conf.MODULES_RU))
                 Conf.FRACTION -> levels.add(Card(Conf.PRICE_FOR_FRACTION.toString(), correct.toString(), wrong.toString(), Conf.FRACTION_RU))
                 Conf.EQUATION -> levels.add(Card(Conf.PRICE_FOR_EQUATION.toString(), correct.toString(), wrong.toString(), Conf.EQUATION_RU))
                 Conf.DEGREE   -> levels.add(Card(Conf.PRICE_FOR_DEGREE.toString(), correct.toString(), wrong.toString(), Conf.DEGREE_RU))
+                Conf.ROOT     -> levels.add(Card(Conf.PRICE_FOR_ROOT.toString(), correct.toString(), wrong.toString(), Conf.ROOT_RU))
                 Conf.LINEAR_FUNCTIONS -> levels.add(Card(Conf.PRICE_FOR_LINEAR_FUNCTIONS.toString(), correct.toString(), wrong.toString(), Conf.LINEAR_FUNCTIONS_RU))
                 Conf.LOGARITHM -> levels.add(Card(Conf.PRICE_FOR_LOGARITHM.toString(), correct.toString(), wrong.toString(), Conf.LOGARITHM_RU))
             }
@@ -91,6 +92,7 @@ class LevelsActivity: Base() {
                     Conf.FRACTION_RU -> initGeneral(cardName, Conf.PRICE_FOR_FRACTION, Conf.FRACTION)
                     Conf.EQUATION_RU -> initGeneral(cardName, Conf.PRICE_FOR_EQUATION, Conf.EQUATION)
                     Conf.DEGREE_RU   -> initGeneral(cardName, Conf.PRICE_FOR_DEGREE, Conf.DEGREE)
+                    Conf.ROOT_RU     -> initGeneral(cardName, Conf.PRICE_FOR_ROOT, Conf.ROOT)
                     Conf.LINEAR_FUNCTIONS_RU -> initGeneral(cardName, Conf.PRICE_FOR_LINEAR_FUNCTIONS, Conf.LINEAR_FUNCTIONS)
                     Conf.LOGARITHM_RU -> initGeneral(cardName, Conf.PRICE_FOR_LOGARITHM, Conf.LOGARITHM)
                 }

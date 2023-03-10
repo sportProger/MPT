@@ -49,6 +49,10 @@ interface UserRepository {
     fun getDegreeExample(): List<DegreeExampleSaveData>
     fun removeDegreeExample()
 
+    fun setRootExample(rootExample: RootExampleSaveData)
+    fun getRootExample(): List<RootExampleSaveData>
+    fun removeRootExample()
+
     fun setLinearFunctionExample(linearExample: LinearFunctionExampleSaveData)
     fun getLinearFunctionExample(): List<LinearFunctionExampleSaveData>
     fun removeLinearFunctionExample()

@@ -18,6 +18,7 @@ class LevelActivity: Base() {
     private val fractionAdapter = FractionAdapter()
     private val equationAdapter = EquationAdapter()
     private val degreeAdapter = DegreeAdapter()
+    private val rootAdapter = RootAdapter()
     private val linearFunctionAdapter = LinearFunctionAdapter()
     private val logarithmAdapter = LogarithmAdapter()
     private val vm by viewModel<LevelViewModel>()
@@ -48,6 +49,7 @@ class LevelActivity: Base() {
                 Conf.FRACTION -> initFractions()
                 Conf.EQUATION -> initEquation()
                 Conf.DEGREE   -> initDegree()
+                Conf.ROOT     -> initRoot()
                 Conf.LINEAR_FUNCTIONS -> initLinearFunction()
                 Conf.LOGARITHM -> initLogarithm()
             }
@@ -84,6 +86,10 @@ class LevelActivity: Base() {
                 Conf.DEGREE -> {
                     vm.removeAllDegreeExample()
                     degreeAdapter.clear()
+                }
+                Conf.ROOT -> {
+                    vm.removeAllRootExample()
+                    rootAdapter.clear()
                 }
                 Conf.LINEAR_FUNCTIONS -> {
                     vm.removeAllLinearFunctionsExample()
@@ -183,6 +189,20 @@ class LevelActivity: Base() {
 
         falseAnswer.text = Conf.PRICE_FOR_CORRECT_DEGREE_ANSWER.toString()
         trueAnswer.text = Conf.PRICE_FOR_WRONG_DEGREE_ANSWER.toString()
+    }
+
+    private fun initRoot() = with(binding) {
+        rvExamples.layoutManager = LinearLayoutManager(this@LevelActivity)
+        rvExamples.adapter = rootAdapter
+        vm.getAllRootExample()
+        vm.getRootExamplesLive().observe(this@LevelActivity, {
+            it.forEach { example -> rootAdapter.addExample(example) }
+        })
+
+        initGeneral(Conf.ROOT)
+
+        falseAnswer.text = Conf.PRICE_FOR_CORRECT_ROOT_ANSWER.toString()
+        trueAnswer.text = Conf.PRICE_FOR_WRONG_ROOT_ANSWER.toString()
     }
 
     private fun initLinearFunction() = with(binding) {

@@ -1,9 +1,9 @@
 package com.sportproger.mpt.presentation
 
 import android.annotation.SuppressLint
-import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Canvas
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.net.ConnectivityManager
@@ -76,7 +76,7 @@ class MainActivity: Base() {
 
                     equalsAd(stateExample)
                     determineNumberOfCoins(Conf.INTEGERS, stateExample)
-                }
+               }
             }
         })
 
@@ -136,38 +136,13 @@ class MainActivity: Base() {
                 else if (example.type == "square") stateExample = checkExampleGeneral(Conf.EQUATION, example.squareResult)
 
                 if (stateExample != null) {
-
                     if (example.type == "linear") {
-                        var userAnswer = currentResultTV.text.toString().toFloat()
-                        vm.setEquationExample(EquationExampleSaveData(
-                            type = example.type,
-                            a = example.a,
-                            b = example.b,
-                            c = example.c,
-                            sign1 = example.sign1,
-                            sign2 = example.sign2,
-                            linearResult = example.linearResult,
-                            squareResult = example.squareResult,
-                            userLinearAnswer = userAnswer,
-                            userSquareAnswer = null,
-                            stateExample = stateExample
-                        ))
+                        val userAnswer = currentResultTV.text.toString().toFloat()
+                        vm.setEquationExample(EquationExampleSaveData(example.type, example.a, example.b, example.c, example.sign1, example.sign2, example.linearResult, example.squareResult, userAnswer, null, stateExample))
                     }
                     else if (example.type == "square") {
                         val userAnswer = currentResultTV.text.toString().toInt()
-                        vm.setEquationExample(EquationExampleSaveData(
-                            type = example.type,
-                            a = example.a,
-                            b = example.b,
-                            c = example.c,
-                            sign1 = example.sign1,
-                            sign2 = example.sign2,
-                            linearResult = example.linearResult,
-                            squareResult = example.squareResult,
-                            userLinearAnswer = null,
-                            userSquareAnswer = userAnswer,
-                            stateExample = stateExample
-                        ))
+                        vm.setEquationExample(EquationExampleSaveData(example.type, example.a, example.b, example.c, example.sign1, example.sign2, example.linearResult, example.squareResult, null, userAnswer, stateExample))
                     }
 
                     currentResultTV.text = ""
@@ -184,19 +159,25 @@ class MainActivity: Base() {
                 if (stateExample != null) {
                     val userAnswer = currentResultTV.text.toString().toInt()
                     currentResultTV.text = ""
-                    vm.setDegreeExample(DegreeExampleSaveData(
-                        base1 = example.base1,
-                        exponent1 = example.exponent1,
-                        sign = example.sign,
-                        base2 = example.base2,
-                        exponent2 = example.exponent2,
-                        result = example.result,
-                        userAnswer = userAnswer,
-                        stateExample = stateExample
-                    ))
+                    vm.setDegreeExample(DegreeExampleSaveData(example.base1, example.exponent1, example.sign, example.base2, example.exponent2, example.result, userAnswer, stateExample))
 
                     equalsAd(stateExample)
                     determineNumberOfCoins(Conf.DEGREE, stateExample)
+                }
+            }
+        })
+
+        vm.rootExampleLive().observe(this@MainActivity, { example ->
+            showRootExample(example.type, example.sign, example.exponent1, example.exponent2, example.baseRoot1, example.baseRoot2)
+            equals.setOnClickListener {
+                val stateExample = checkExampleGeneral(Conf.ROOT, example.result)
+                if (stateExample != null) {
+                    val userAnswer = currentResultTV.text.toString().toFloat()
+                    currentResultTV.text = ""
+                    vm.setRootExample(RootExampleSaveData(example.type, example.exponent1, example.exponent2, example.baseRoot1, example.baseRoot2, example.sign, example.result, userAnswer, stateExample))
+
+                    equalsAd(stateExample)
+                    determineNumberOfCoins(Conf.ROOT, stateExample)
                 }
             }
         })
@@ -251,7 +232,8 @@ class MainActivity: Base() {
         })
 
         vm.levelLive().observe(this@MainActivity, {
-            when(it) {
+            val current = Conf.ROOT
+            when(current) {
                 Conf.INTEGERS -> {
                     vm.generateIntegersExample(module = false)
                     showHideLayout(constraintSimple)
@@ -278,6 +260,11 @@ class MainActivity: Base() {
                     showHideLayout(constraintDegree)
                     currentResultTV = resDegree
                 }
+                Conf.ROOT -> {
+                    vm.generateRootExamples()
+                    showHideLayout(constraintRoot)
+                    currentResultTV = rootRes
+                }
                 Conf.LINEAR_FUNCTIONS -> {
                     vm.generateLinearFunctionExample()
                     showHideLayout(constraintLinearFunction)
@@ -303,9 +290,7 @@ class MainActivity: Base() {
                     R.id.help_project   -> startActivity(Intent(this@MainActivity, HelpProjectActivity::class.java))
                     R.id.levels         -> startActivity(Intent(this@MainActivity, LevelsActivity::class.java))
                     R.id.games          -> {
-                        if (internetConnectionCheck()) {
-                            startActivity(Intent(this@MainActivity, GamesActivity::class.java))
-                        }
+                        if (internetConnectionCheck()) startActivity(Intent(this@MainActivity, GamesActivity::class.java))
                         else Toast.makeText(this@MainActivity, getString(R.string.enabled_internet), Toast.LENGTH_SHORT).show()
                     }
                     R.id.themes         -> startActivity(Intent(this@MainActivity, ThemesActivity::class.java))
@@ -343,6 +328,10 @@ class MainActivity: Base() {
             Conf.DEGREE -> {
                 if (state) vm.setNumberOfCoins(currentCoinCount + Conf.PRICE_FOR_CORRECT_DEGREE_ANSWER)
                 else vm.setNumberOfCoins(currentCoinCount + Conf.PRICE_FOR_WRONG_DEGREE_ANSWER)
+            }
+            Conf.ROOT -> {
+                if (state) vm.setNumberOfCoins(currentCoinCount + Conf.PRICE_FOR_CORRECT_ROOT_ANSWER)
+                else vm.setNumberOfCoins(currentCoinCount + Conf.PRICE_FOR_WRONG_ROOT_ANSWER)
             }
             Conf.LINEAR_FUNCTIONS -> {
                 if (state) vm.setNumberOfCoins(currentCoinCount + Conf.PRICE_FOR_CORRECT_LINEAR_FUNCTIONS_ANSWER)
@@ -422,8 +411,8 @@ class MainActivity: Base() {
             value = res
             vm.getLevel()
         }
-        else if(ua == "-") errorAnswer(R.string.you_dont_enter_number)
-        else if(ua.isNotEmpty()) {
+        else if (ua == "-") errorAnswer(R.string.you_dont_enter_number)
+        else if (ua.isNotEmpty()) {
             if (ua[-1] == ',') {
                 errorAnswer(R.string.incorrect_data_entered)
             }
@@ -505,12 +494,11 @@ class MainActivity: Base() {
         constraintEquation.visibility          = View.INVISIBLE
         constraintFactorial.visibility         = View.INVISIBLE
         constraintLogarithm.visibility         = View.INVISIBLE
+        constraintRoot.visibility              = View.INVISIBLE
         constraintLinearFunction.visibility    = View.INVISIBLE
         constraintCombinations.visibility      = View.INVISIBLE
         constraintAccommodation.visibility     = View.INVISIBLE
         showLayout.visibility                  = View.VISIBLE
-
-        Log.d("TaskLog", "Show Hide Layout")
     }
 
     private fun showIntegersExample(num1: Int, sign: String, num2: Int) = with(binding) {
@@ -613,6 +601,24 @@ class MainActivity: Base() {
         signForDegree.text = sign
         baseOfDegree2.text = base2.toString()
         exponent2.text = exp2.toString()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showRootExample(type: String, sign: String, exponent1: Int, exponent2: Int, rootBase1: Int, rootBase2: Int) = with(binding) {
+        if (type == Conf.ROOT_TYPES.ONE.name) {
+            constraintRootTwo.visibility = View.GONE
+            constraintRootOne.visibility = View.VISIBLE
+
+            rootOne1.text = "sqrt($rootBase1, $exponent1)"
+        }
+        if (type == Conf.ROOT_TYPES.TWO.name) {
+            constraintRootOne.visibility = View.GONE
+            constraintRootTwo.visibility = View.VISIBLE
+
+            rootTwo1.text = "sqrt($rootBase1, $exponent1)"
+            rootTwoSign.text = sign
+            rootTwo2.text = "sqrt($rootBase2, $exponent2)"
+        }
     }
 
     @SuppressLint("SetTextI18n")

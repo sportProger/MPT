@@ -16,6 +16,7 @@ class LevelViewModel(
     private val fractionExamples = MutableLiveData<List<Fraction>>()
     private val equationExamples = MutableLiveData<List<Equation>>()
     private val degreeExamples = MutableLiveData<List<Degree>>()
+    private val rootExamples = MutableLiveData<List<Root>>()
     private val logarithmExamples = MutableLiveData<List<Logarithm>>()
     private val linearFunctionExamples = MutableLiveData<List<LinearFunction>>()
     private val numberOfCorrectAnswer = MutableLiveData<Int>()
@@ -38,6 +39,8 @@ class LevelViewModel(
     fun getEquationExamplesLive(): LiveData<List<Equation>> { return equationExamples }
 
     fun getDegreeExamplesLive(): LiveData<List<Degree>> { return degreeExamples }
+
+    fun getRootExamplesLive(): LiveData<List<Root>> { return rootExamples }
 
     fun getLinearFunctionExamplesLive(): LiveData<List<LinearFunction>> { return linearFunctionExamples }
 
@@ -123,6 +126,25 @@ class LevelViewModel(
         degreeExamples.value = resultData
     }
 
+    fun getAllRootExample() {
+        val resultData = mutableListOf<Root>()
+        userRepository.getRootExample().forEach {
+            resultData.add(Root(
+                type = it.type,
+                exponent1 = it.exponent1,
+                exponent2 = it.exponent2,
+                baseRoot1 = it.baseRoot1,
+                baseRoot2 = it.baseRoot2,
+                sign = it.sign,
+                result = it.result,
+                userAnswer = it.userAnswer,
+                stateExample = it.stateExample
+            ))
+        }
+
+        rootExamples.value = resultData
+    }
+
     fun getAllEquationExample() {
         val resultData = mutableListOf<Equation>()
         userRepository.getEquationExample().forEach {
@@ -185,6 +207,8 @@ class LevelViewModel(
     fun removeAllEquationExamples() { userRepository.removeEquationExample() }
 
     fun removeAllDegreeExample() { userRepository.removeDegreeExample() }
+
+    fun removeAllRootExample() { userRepository.removeRootExample() }
 
     fun removeAllLinearFunctionsExample() { userRepository.removeLinearFunctionExample() }
 

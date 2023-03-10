@@ -35,11 +35,19 @@ object Conf {
     const val DEGREE = "DEGREE"
     const val DEGREE_RU = "Степени"
 
+    const val ROOT = "ROOT"
+    const val ROOT_RU = "Корни"
+
     const val LINEAR_FUNCTIONS = "LINEAR_FUNCTIONS"
     const val LINEAR_FUNCTIONS_RU = "Линейные функции"
 
     const val LOGARITHM = "LOGARITHM"
     const val LOGARITHM_RU = "Логарифмы"
+
+    enum class ROOT_TYPES(type: String) {
+        ONE("one"),
+        TWO("two")
+    }
 
     const val PRICE_FOR_DARK_THEME = 400
 
@@ -58,19 +66,23 @@ object Conf {
     const val PRICE_FOR_CORRECT_DEGREE_ANSWER = 6
     const val PRICE_FOR_WRONG_DEGREE_ANSWER = -5
 
-    const val PRICE_FOR_CORRECT_LINEAR_FUNCTIONS_ANSWER = 7
-    const val PRICE_FOR_WRONG_LINEAR_FUNCTIONS_ANSWER = -6
+    const val PRICE_FOR_CORRECT_ROOT_ANSWER = 7
+    const val PRICE_FOR_WRONG_ROOT_ANSWER = -6
 
-    const val PRICE_FOR_CORRECT_LOGARITHM_ANSWER = 8
-    const val PRICE_FOR_WRONG_LOGARITHM_ANSWER = -7
+    const val PRICE_FOR_CORRECT_LINEAR_FUNCTIONS_ANSWER = 8
+    const val PRICE_FOR_WRONG_LINEAR_FUNCTIONS_ANSWER = -7
+
+    const val PRICE_FOR_CORRECT_LOGARITHM_ANSWER = 9
+    const val PRICE_FOR_WRONG_LOGARITHM_ANSWER = -8
 
     const val PRICE_FOR_INTEGERS = 0
     const val PRICE_FOR_MODULES = 50
     const val PRICE_FOR_FRACTION = 100
     const val PRICE_FOR_EQUATION = 150
     const val PRICE_FOR_DEGREE = 200
-    const val PRICE_FOR_LINEAR_FUNCTIONS = 250
-    const val PRICE_FOR_LOGARITHM = 300
+    const val PRICE_FOR_ROOT = 250
+    const val PRICE_FOR_LINEAR_FUNCTIONS = 300
+    const val PRICE_FOR_LOGARITHM = 350
 
     //  Games
 

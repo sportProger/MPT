@@ -29,6 +29,7 @@ class MainViewModel(
     private val exampleForFraction = MutableLiveData<FractionExample>()
     private val exampleForEquation = MutableLiveData<EquationExample>()
     private val exampleForDegree = MutableLiveData<DegreeExample>()
+    private val exampleForRoot = MutableLiveData<RootExample>()
     private val exampleForLinearFunction = MutableLiveData<LinearFunctionExample>()
     private val exampleForLogarithm = MutableLiveData<LogarithmExample>()
     private val levelLive = MutableLiveData<String>()
@@ -67,6 +68,8 @@ class MainViewModel(
 
     fun degreeExampleLive(): LiveData<DegreeExample> { return exampleForDegree }
 
+    fun rootExampleLive(): LiveData<RootExample> { return exampleForRoot }
+
     fun logarithmExampleLive(): LiveData<LogarithmExample> { return exampleForLogarithm }
 
     fun setIntegersExample(integersExample: IntegersExampleSaveData) { userRepository.setIntegersExample(integersExample) }
@@ -78,6 +81,8 @@ class MainViewModel(
      fun setEquationExample(equationExample: EquationExampleSaveData) { userRepository.setEquationExample(equationExample) }
 
     fun setDegreeExample(degreeExample: DegreeExampleSaveData) { userRepository.setDegreeExample(degreeExample) }
+
+    fun setRootExample(rootExample: RootExampleSaveData) { userRepository.setRootExample(rootExample) }
 
     fun setLogarithmExample(logarithmExample: LogarithmExampleSaveData) { userRepository.setLogarithmExample(logarithmExample) }
 
@@ -109,18 +114,17 @@ class MainViewModel(
         val mobile = connectivity.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)?.isConnected
 
         if (wifi != null && wifi) { isInternetConnection.value = true }
-        else if (mobile != null && mobile) { isInternetConnection.value = true }
-        else { isInternetConnection.value = false }
+        else isInternetConnection.value = mobile != null && mobile
     }
 
     private fun max(a: Int, b: Int): Int {
-        if (a > b) return a
-        else return b
+        return if (a > b) a
+        else b
     }
 
     private fun min(a: Int, b: Int): Int {
-        if (a < b) return a
-        else return b
+        return if (a < b) a
+        else b
     }
 
     private fun numbersToDivide(): ArrayList<Int> {
@@ -145,8 +149,8 @@ class MainViewModel(
         Log.d("TaskLog", "Generate Integers Example")
 
         if(sign != "/") {
-            var num1: Int
-            var num2: Int
+            val num1: Int
+            val num2: Int
             var result = 0
 
                 if(data.from == 1) {
@@ -265,21 +269,11 @@ class MainViewModel(
 
             Log.d("TaskLog", "$a - a, $b - b, $c - c, $x1 - x1, $x2 - x2")
 
-            if (b < 0) {
-                sign1 = "+"
-                b = abs(b)
-            }
-            else {
-                sign1 = "-"
-            }
+            if (b < 0) { sign1 = "+"; b = abs(b) }
+            else sign1 = "-"
 
-            if (c < 0) {
-                sign2 = "-"
-                c = abs(c)
-            }
-            else {
-                sign2 = "+"
-            }
+            if (c < 0) { sign2 = "-"; c = abs(c) }
+            else sign2 = "+"
 
             exampleForEquation.value = EquationExample(type, a, b, c, sign1, sign2, null, arrayListOf(x1, x2))
             Log.d("TaskLog", "$type - type, $a - a, $b - b, $c - c, $x1 - x1, $x2 - x2, $sign1 - sign1, $sign2 - sign2")
@@ -313,6 +307,33 @@ class MainViewModel(
         Log.d(Conf.MY_LOG, result.toString())
 
         exampleForDegree.value = DegreeExample(base1, exponent1, sign, base2, exponent2, result)
+    }
+
+    fun generateRootExamples() {
+        val data = userRepository.getTypeNumbers()
+        val type = arrayListOf(Conf.ROOT_TYPES.ONE.name, Conf.ROOT_TYPES.TWO.name).random()
+        val sign = arrayListOf("+", "-", "*", "/").random()
+        val exponent1 = (2..4).random()
+        val exponent2 = (2..4).random()
+        val base1 = (data.from..data.to).random()
+        val base2 = (data.from..data.to).random()
+        val baseRoot1 = base1.toDouble().pow(exponent1.toDouble()).toInt()
+        val baseRoot2 = base2.toDouble().pow(exponent2.toDouble()).toInt()
+        var result = 0.0F
+
+        if (type == Conf.ROOT_TYPES.ONE.name) {
+            exampleForRoot.value = RootExample(type, exponent1, exponent2, baseRoot1, baseRoot2, sign, base1.toFloat())
+        }
+        if (type == Conf.ROOT_TYPES.TWO.name) {
+            if (sign == "+") result = (base1 + base2).toFloat()
+            if (sign == "*") result = (base1 - base2).toFloat()
+            if (sign == "-") result = (base1 * base2).toFloat()
+            if (sign == "/") result = String.format("%.2f", (base1.toFloat() / base2.toFloat())).toFloat()
+
+            exampleForRoot.value = RootExample(type, exponent1, exponent2, baseRoot1, baseRoot2, sign, result)
+        }
+
+        Log.d("TaskLog", "$base1 - base1, $base2 - base2, $exponent1 - exponent1, $exponent2 - exponent2, $baseRoot1 - root1, $baseRoot2 - root2, $result - result")
     }
 
     fun generateLinearFunctionExample() {

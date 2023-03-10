@@ -132,6 +132,31 @@ class ExampleStorageImpl(context: Context): ExampleStorage {
         db.degreeExampleDao().deleteAll()
     }
 
+    override fun setRootExample(rootExample: RootExampleSaveDataStorage) {
+        if (db.rootExampleDao().getAll().size < maxExamples) {
+            db.rootExampleDao().insertAll(RootExampleEntity(
+                null,
+                type = rootExample.type,
+                exponent1 = rootExample.exponent1,
+                exponent2 = rootExample.exponent2,
+                baseRoot1 = rootExample.baseRoot1,
+                baseRoot2 = rootExample.baseRoot2,
+                sign = rootExample.sign,
+                result = rootExample.result,
+                userAnswer = rootExample.userAnswer,
+                stateExample = rootExample.stateExample
+            ))
+        }
+    }
+
+    override fun getRootExample(): List<RootExampleEntity> {
+        return db.rootExampleDao().getAll()
+    }
+
+    override fun removeRootExample() {
+        db.rootExampleDao().deleteAll()
+    }
+
     override fun setLinearFunctionExample(linearExample: LinearFunctionExampleSaveDataStorage) {
         if (db.linearFunctionDao().getAll().size < maxExamples) {
             db.linearFunctionDao().insertAll(LinearFunctionExampleEntity(

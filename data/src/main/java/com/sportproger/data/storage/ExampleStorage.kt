@@ -28,6 +28,10 @@ interface ExampleStorage {
     fun getDegreeExample(): List<DegreeExampleEntity>
     fun removeDegreeExample()
 
+    fun setRootExample(rootExample: RootExampleSaveDataStorage)
+    fun getRootExample(): List<RootExampleEntity>
+    fun removeRootExample()
+
     fun setLinearFunctionExample(linearExample: LinearFunctionExampleSaveDataStorage)
     fun getLinearFunctionExample(): List<LinearFunctionExampleEntity>
     fun removeLinearFunctionExample()

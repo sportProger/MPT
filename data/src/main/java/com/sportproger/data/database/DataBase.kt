@@ -11,6 +11,7 @@ import com.sportproger.data.database.Entity.*
     FractionsExampleEntity::class,
     EquationExampleEntity::class,
     DegreeExampleEntity::class,
+    RootExampleEntity::class,
     LinearFunctionExampleEntity::class,
     LogarithmExampleEntity::class
 ], version = 1)
@@ -20,6 +21,7 @@ abstract class DataBase : RoomDatabase() {
     abstract fun fractionsExampleDao(): FractionsExampleEntityDao
     abstract fun equationExampleDao(): EquationExampleEntityDao
     abstract fun degreeExampleDao(): DegreeExampleEntityDao
+    abstract fun rootExampleDao(): RootExampleEntityDao
     abstract fun linearFunctionDao(): LinearFunctionExampleEntityDao
     abstract fun logarithmExampleDao(): LogarithmExampleEntityDao
 }

@@ -275,9 +275,48 @@ class UserRepositoryImpl(
         exampleStorage.removeDegreeExample()
     }
 
+    override fun setRootExample(rootExample: RootExampleSaveData) {
+        exampleStorage.setRootExample(RootExampleSaveDataStorage(
+            type = rootExample.type,
+            exponent1 = rootExample.exponent1,
+            exponent2 = rootExample.exponent2,
+            baseRoot1 = rootExample.baseRoot1,
+            baseRoot2 = rootExample.baseRoot2,
+            sign = rootExample.sign,
+            result = rootExample.result,
+            userAnswer = rootExample.userAnswer,
+            stateExample = rootExample.stateExample
+        ))
+    }
+
+    override fun getRootExample(): List<RootExampleSaveData> {
+        val data = exampleStorage.getRootExample()
+        val result = mutableListOf<RootExampleSaveData>()
+        data.forEach {
+            val example = RootExampleSaveData(
+                type = it.type,
+                exponent1 = it.exponent1,
+                exponent2 = it.exponent2,
+                baseRoot1 = it.baseRoot1,
+                baseRoot2 = it.baseRoot2,
+                sign = it.sign,
+                result = it.result,
+                userAnswer = it.userAnswer,
+                stateExample = it.stateExample
+            )
+
+            result.add(example)
+        }
+
+        return result
+    }
+
+    override fun removeRootExample() {
+        exampleStorage.removeRootExample()
+    }
+
     override fun setLinearFunctionExample(linearExample: LinearFunctionExampleSaveData) {
-        exampleStorage.setLinearFunctionExample(
-            LinearFunctionExampleSaveDataStorage(
+        exampleStorage.setLinearFunctionExample(LinearFunctionExampleSaveDataStorage(
             x = linearExample.x,
             a = linearExample.a,
             b = linearExample.b,
