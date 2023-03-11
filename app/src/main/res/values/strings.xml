@@ -82,6 +82,7 @@
     <string name="true_answer">- правильный ответ</string>
     <string name="start">Начать</string>
     <string name="max_examples">Максимум можно сохранить 25 примеров</string>
+    <string name="division_text">Если в результате получается десятичная дробь то вводите ответ до сотых долей</string>
 
     <!--  RoundTheEnd  -->
 

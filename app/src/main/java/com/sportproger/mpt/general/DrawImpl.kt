@@ -9,24 +9,22 @@ import android.os.Build
 import androidx.core.content.ContextCompat.getColor
 import com.sportproger.mpt.R
 
-class DrawImpl(context: Context, canvas: Canvas): Draw {
-    private val context = context
-    private val canvas = canvas
-    override fun drawRoot1(rootBase1: String, exponent1: String, strokeWidth: Float, textSize: Float) {
+class DrawImpl(private val context: Context, private val canvas: Canvas): Draw {
+    override fun drawRoot1(rootBase1: String, exponent1: String, strokeWidth: Float, textSize: Float, color: Int) {
         val paintRoot = Paint()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            paintRoot.color = getColor(context, R.color.black)
+            paintRoot.color = getColor(context, color)
         }
         paintRoot.strokeWidth = strokeWidth
 
         val paintBaseRoot = Paint()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            paintBaseRoot.color = getColor(context, R.color.black)
+            paintBaseRoot.color = getColor(context, color)
         }
         paintBaseRoot.textSize = textSize
 
         val paintExponentRoot = Paint()
-        paintExponentRoot.color = getColor(context, R.color.black)
+        paintExponentRoot.color = getColor(context, color)
         paintExponentRoot.textSize = (textSize / 1.8).toFloat()
 
         val ptsRoot = floatArrayOf(
@@ -41,28 +39,29 @@ class DrawImpl(context: Context, canvas: Canvas): Draw {
         canvas.drawText(rootBase1, 100f, canvas.height.toFloat() - 20f, paintBaseRoot)
     }
 
-    override fun drawSign(sign: String, textSize: Float, rootBase1: String) {
+    override fun drawSign(sign: String, textSize: Float, rootBase1: String, color: Int) {
         val paint = Paint()
         paint.textSize = textSize
+        paint.color = getColor(context, color)
 
         canvas.drawText(sign, 170f + rootBase1.length * 40f, (canvas.height / 1.3).toFloat(), paint)
     }
 
-    override fun drawRoot2(rootBase2: String, exponent2: String, strokeWidth: Float, textSize: Float, signPosition: Float) {
+    override fun drawRoot2(rootBase2: String, exponent2: String, strokeWidth: Float, textSize: Float, signPosition: Float, color: Int) {
         val paintRoot = Paint()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            paintRoot.color = getColor(context, R.color.black)
+            paintRoot.color = getColor(context, color)
         }
         paintRoot.strokeWidth = strokeWidth
 
         val paintBaseRoot = Paint()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            paintBaseRoot.color = getColor(context, R.color.black)
+            paintBaseRoot.color = getColor(context, color)
         }
         paintBaseRoot.textSize = textSize
 
         val paintExponentRoot = Paint()
-        paintExponentRoot.color = getColor(context, R.color.black)
+        paintExponentRoot.color = getColor(context, color)
         paintExponentRoot.textSize = (textSize / 1.8).toFloat()
 
         val ptsRoot = floatArrayOf(

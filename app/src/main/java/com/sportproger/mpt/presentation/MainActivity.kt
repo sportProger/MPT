@@ -46,6 +46,7 @@ class MainActivity: Base() {
     private lateinit var currentResultTV: TextView
     private var soundsFlag = false
     private var falseAnswerCount = 0
+    private lateinit var currentTheme: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +63,10 @@ class MainActivity: Base() {
         share(share)
 
         vm.getCurrentTheme()
-        vm.currentThemeLive().observe(this@MainActivity, { vm.setCurrentTheme(it) })
+        vm.currentThemeLive().observe(this@MainActivity, {
+            currentTheme = it
+            vm.setCurrentTheme(it)
+        })
 
         vm.getNumberOfCoins()
         vm.numberOfCoinsLive().observe(this@MainActivity, { tvCoinCount.text = it.toString() })
@@ -236,13 +240,11 @@ class MainActivity: Base() {
         })
 
         vm.levelLive().observe(this@MainActivity, {
-            val current = Conf.ROOT
-            when(current) {
+            when(it) {
                 Conf.INTEGERS -> {
                     vm.generateIntegersExample(module = false)
                     showHideLayout(constraintSimple)
                     currentResultTV = resSimple
-                    Log.d("TaskLog", "Integers")
                 }
                 Conf.FRACTION -> {
                     vm.generateFractionExample()
@@ -620,16 +622,21 @@ class MainActivity: Base() {
             canvas.setBitmap(bitmap)
 
             val draw = DrawImpl(this, canvas)
-            draw.drawRoot1(rootBase1.toString(), exponent1.toString(), 5f, 64f)
+
+            if (currentTheme == Conf.STANDART_THEM) draw.drawRoot1(rootBase1.toString(), exponent1.toString(), 5f, 64f, R.color.black)
+            if (currentTheme == Conf.DARK_THEM) draw.drawRoot1(rootBase1.toString(), exponent1.toString(), 5f, 64f, R.color.white)
         }
         if (type == Conf.ROOT_TYPES.TWO.name) {
             bitmap = Bitmap.createBitmap(600, 125, Bitmap.Config.ARGB_8888)
             canvas.setBitmap(bitmap)
 
             val draw = DrawImpl(this, canvas)
-            draw.drawRoot1(rootBase1.toString(), exponent1.toString(), 5f, 64f)
-            draw.drawSign(sign, 64f, rootBase1.toString())
-            draw.drawRoot2(rootBase2.toString(), exponent2.toString(),5f, 64f, 200f + rootBase1.toString().length * 40f)
+            var color = R.color.black
+            if (currentTheme == Conf.DARK_THEM) color = R.color.white
+
+            draw.drawRoot1(rootBase1.toString(), exponent1.toString(), 5f, 64f, color)
+            draw.drawSign(sign, 64f, rootBase1.toString(), color)
+            draw.drawRoot2(rootBase2.toString(), exponent2.toString(),5f, 64f, 200f + rootBase1.toString().length * 40f, color)
         }
 
         val imageView = ImageView(this)

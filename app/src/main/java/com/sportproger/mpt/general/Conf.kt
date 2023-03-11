@@ -10,7 +10,7 @@ object Conf {
     const val AdUnitIdForVideo = "R-M-1716465-1"
     const val AdUnitIdForBanner = "R-M-1716465-2"
     const val AdUnitIdForInterstitial = "R-M-1716465-3"
-    const val START_COIN = 1000
+    const val START_COIN = 1500
 
     const val UNAMBIGUOUS = "UNAMBIGUOUS" // Однозначные
     const val TWO_DIGIT   = "TWO_DIGIT" // Двузначные

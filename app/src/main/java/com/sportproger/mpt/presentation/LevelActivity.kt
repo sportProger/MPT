@@ -18,7 +18,7 @@ class LevelActivity: Base() {
     private val fractionAdapter = FractionAdapter()
     private val equationAdapter = EquationAdapter()
     private val degreeAdapter = DegreeAdapter()
-    private val rootAdapter = RootAdapter()
+    private val rootAdapter = RootAdapter(this)
     private val linearFunctionAdapter = LinearFunctionAdapter()
     private val logarithmAdapter = LogarithmAdapter()
     private val vm by viewModel<LevelViewModel>()

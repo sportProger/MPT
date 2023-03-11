@@ -37,7 +37,7 @@ class LevelsActivity: Base() {
         cardAdapter.clear()
         levels.clear()
 
-        val levelsArr = listOf(Conf.INTEGERS, Conf.FRACTION, Conf.MODULES, Conf.EQUATION, Conf.DEGREE, Conf.ROOT, Conf.LINEAR_FUNCTIONS, Conf.LOGARITHM)
+        val levelsArr = listOf(Conf.INTEGERS, Conf.FRACTION, Conf.MODULES, Conf.EQUATION, Conf.DEGREE, Conf.ROOT, Conf.LOGARITHM)
 
         levelsArr.forEach { level ->
             val correct = vm.getNumberOfCorrectAnswer(level)
