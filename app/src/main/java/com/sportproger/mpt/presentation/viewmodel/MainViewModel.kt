@@ -311,12 +311,12 @@ class MainViewModel(
 
     fun generateRootExamples() {
         val data = userRepository.getTypeNumbers()
-        val type = arrayListOf(Conf.ROOT_TYPES.ONE.name, Conf.ROOT_TYPES.TWO.name).random()
-        val sign = arrayListOf("+", "-", "*", "/").random()
-        val exponent1 = (2..4).random()
-        val exponent2 = (2..4).random()
-        val base1 = (data.from..data.to).random()
-        val base2 = (data.from..data.to).random()
+        val type = arrayListOf(Conf.ROOT_TYPES.TWO.name, Conf.ROOT_TYPES.TWO.name).random()
+        val sign = arrayListOf("+", "-", "*", "/").shuffled().last()
+        val exponent1 = (2..4).shuffled().last()
+        val exponent2 = (2..4).shuffled().last()
+        val base1 = (data.from..data.to).shuffled().last()
+        val base2 = (data.from..data.to).shuffled().last()
         val baseRoot1 = base1.toDouble().pow(exponent1.toDouble()).toInt()
         val baseRoot2 = base2.toDouble().pow(exponent2.toDouble()).toInt()
         var result = 0.0F
@@ -326,8 +326,8 @@ class MainViewModel(
         }
         if (type == Conf.ROOT_TYPES.TWO.name) {
             if (sign == "+") result = (base1 + base2).toFloat()
-            if (sign == "*") result = (base1 - base2).toFloat()
-            if (sign == "-") result = (base1 * base2).toFloat()
+            if (sign == "*") result = (base1 * base2).toFloat()
+            if (sign == "-") result = (base1 - base2).toFloat()
             if (sign == "/") result = String.format("%.2f", (base1.toFloat() / base2.toFloat())).toFloat()
 
             exampleForRoot.value = RootExample(type, exponent1, exponent2, baseRoot1, baseRoot2, sign, result)

@@ -3,8 +3,7 @@ package com.sportproger.mpt.presentation
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Canvas
-import android.graphics.Color
+import android.graphics.*
 import android.media.MediaPlayer
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -34,7 +33,12 @@ import com.yandex.mobile.ads.rewarded.Reward
 import com.yandex.mobile.ads.rewarded.RewardedAd
 import com.yandex.mobile.ads.rewarded.RewardedAdEventListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.lifecycle.ViewModelProvider
+import android.view.ViewGroup
+import android.os.Build
+import androidx.core.content.ContextCompat
+import com.sportproger.mpt.general.Draw
+import com.sportproger.mpt.general.DrawImpl
+
 
 class MainActivity: Base() {
     private lateinit var binding: ActivityMainBinding
@@ -604,21 +608,40 @@ class MainActivity: Base() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showRootExample(type: String, sign: String, exponent1: Int, exponent2: Int, rootBase1: Int, rootBase2: Int) = with(binding) {
-        if (type == Conf.ROOT_TYPES.ONE.name) {
-            constraintRootTwo.visibility = View.GONE
-            constraintRootOne.visibility = View.VISIBLE
+    private fun showRootExample(type: String, sign: String, exponent1: Int, exponent2: Int, rootBase1: Int, rootBase2: Int) {
+        val rect = Rect()
+        rect[100, 100, 300] = 300
 
-            rootOne1.text = "sqrt($rootBase1, $exponent1)"
+        val canvas = Canvas()
+        lateinit var bitmap: Bitmap;
+
+        if (type == Conf.ROOT_TYPES.ONE.name) {
+            bitmap = Bitmap.createBitmap(( rootBase1.toString().length * 40f ).toInt() + 120, 125, Bitmap.Config.ARGB_8888)
+            canvas.setBitmap(bitmap)
+
+            val draw = DrawImpl(this, canvas)
+            draw.drawRoot1(rootBase1.toString(), exponent1.toString(), 5f, 64f)
         }
         if (type == Conf.ROOT_TYPES.TWO.name) {
-            constraintRootOne.visibility = View.GONE
-            constraintRootTwo.visibility = View.VISIBLE
+            bitmap = Bitmap.createBitmap(600, 125, Bitmap.Config.ARGB_8888)
+            canvas.setBitmap(bitmap)
 
-            rootTwo1.text = "sqrt($rootBase1, $exponent1)"
-            rootTwoSign.text = sign
-            rootTwo2.text = "sqrt($rootBase2, $exponent2)"
+            val draw = DrawImpl(this, canvas)
+            draw.drawRoot1(rootBase1.toString(), exponent1.toString(), 5f, 64f)
+            draw.drawSign(sign, 64f, rootBase1.toString())
+            draw.drawRoot2(rootBase2.toString(), exponent2.toString(),5f, 64f, 200f + rootBase1.toString().length * 40f)
         }
+
+        val imageView = ImageView(this)
+        imageView.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        imageView.setBackgroundColor(Color.TRANSPARENT)
+        imageView.scaleType = ImageView.ScaleType.CENTER
+        imageView.setImageBitmap(bitmap)
+        binding.constraintRootTwo.removeAllViews()
+        binding.constraintRootTwo.addView(imageView)
     }
 
     @SuppressLint("SetTextI18n")
